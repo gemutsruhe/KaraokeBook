@@ -1,4 +1,4 @@
-package com.example.karaokebook;
+package com.karaoke.karaokebook;
 
 public class SongInfo {
     private String number;

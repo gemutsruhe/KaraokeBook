@@ -1,23 +1,16 @@
-package com.example.karaokebook;
+package com.karaoke.karaokebook;
 
 import android.net.Uri;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
-
-import androidx.lifecycle.MutableLiveData;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Set;
 import java.util.concurrent.Callable;
 
 public class SearchSong implements Callable<ArrayList<SongInfo>> {

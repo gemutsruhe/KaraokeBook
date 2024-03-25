@@ -1,4 +1,4 @@
-package com.example.karaokebook;
+package com.karaoke.karaokebook;
 
 import org.junit.Test;
 

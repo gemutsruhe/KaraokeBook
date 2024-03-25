@@ -1,26 +1,38 @@
-package com.example.karaokebook;
+package com.karaoke.karaokebook;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import retrofit2.Retrofit;
+
 public class SearchedSongListLayout extends LinearLayout {
     LayoutInflater inflater;
     BookmarkDB bookmarkDB;
+
+    String sharedPrefKey = getResources().getString(R.string.user_id);
+
+    Retrofit client;
+    LibraryAPI api;
+    SharedPreferences sharedPref;
     public SearchedSongListLayout(Context context) {
         super(context);
         this.setOrientation(LinearLayout.VERTICAL);
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         bookmarkDB = BookmarkDB.getInstance();
+        sharedPref = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
+        if(sharedPref.contains(sharedPrefKey)) {
+            //sharedPref.get
+        }
     }
 
     public void addSearchedSongs(ArrayList<SongInfo> searchedSongInfoList) {
@@ -74,6 +86,9 @@ public class SearchedSongListLayout extends LinearLayout {
             @Override
             public void onClick(View view) {
                 Drawable uncheckedBookmark = getResources().getDrawable(R.drawable.unchecked_bookmark, getContext().getTheme());
+                if(sharedPref.contains(sharedPrefKey)) {
+                    //sharedPref.get
+                }
                 if(bookmarkImageView.getDrawable().getConstantState().equals(uncheckedBookmark.getConstantState())) {
                     bookmarkImageView.setImageResource(R.drawable.checked_bookmark);
                     bookmarkDB.addBookmark(songInfo);
@@ -83,7 +98,5 @@ public class SearchedSongListLayout extends LinearLayout {
                 }
             }
         });
-
-
     }
 }

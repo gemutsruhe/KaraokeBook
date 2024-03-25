@@ -1,6 +1,5 @@
-package com.example.karaokebook;
+package com.karaoke.karaokebook;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -10,12 +9,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.MutableLiveData;
@@ -62,7 +59,7 @@ public class SearchFragment extends Fragment {
         searchImage = v.findViewById(R.id.searchImageView);
         searchStrEditText = v.findViewById(R.id.searchStrEditText);
         ScrollView searchedSongScrollView = v.findViewById(R.id.searchedSongScrollView);
-        searchedSongListLayout = new SearchedSongListLayout(getContext());
+        searchedSongListLayout = new SearchedSongListLayout(getContext(), );
         searchedSongScrollView.addView(searchedSongListLayout);
         //searchedSongListLayout = v.findViewById(R.id.searchedSongListLayout);
 

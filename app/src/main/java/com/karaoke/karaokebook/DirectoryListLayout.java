@@ -1,4 +1,4 @@
-package com.example.karaokebook;
+package com.karaoke.karaokebook;
 
 import android.content.Context;
 import android.view.LayoutInflater;

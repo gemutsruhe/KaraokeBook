@@ -1,8 +1,8 @@
-package com.example.karaokebook;
+package com.karaoke.karaokebook;
 
 public class DBConstants {
     static final String DATABASE_NAME = "BookmarkList.db";
-
+    static final String COL_ID = "id";
     static final String COL_BOOKMARK_ID = "bookmark_id";
     static final String COL_SONG_NUMBER = "song_number";
     static final String COL_SONG_NAME = "song_name";
@@ -12,7 +12,7 @@ public class DBConstants {
     static final String FOLDER_TABLE_NAME = "Folder";
     static final String COL_FOLDER_ID = "folder_id";
     static final String COL_FOLDER_NAME = "folder_name";
-    static final String COL_BOOKMARKS_coount
+    static final String COL_BOOKMARKS_COUNT = "count";
     static final String FOLDER_BOOKMARK_TABLE_NAME = "FolderBookmarkList";
     static final String TABLE_NAME = "Bookmark";
     static final String COL_NUMBER = "number";

@@ -1,4 +1,4 @@
-package com.example.karaokebook;
+package com.karaoke.karaokebook;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -15,7 +15,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,5 +1,7 @@
-package com.example.karaokebook;
+package com.karaoke.karaokebook;
 
+
+import static com.karaoke.karaokebook.DBConstants.*;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,9 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import com.example.karaokebook.BookmarkDB;
 
-import java.io.File;
 import java.util.ArrayList;
 
 public class BookmarkDB extends SQLiteOpenHelper {
@@ -45,7 +45,6 @@ public class BookmarkDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         SongInfo songInfo;
         //songInfo.ge
-
         db.execSQL("CREATE TABLE Bookmark(bookmark_id INTEGER PRIMARY KEY AUTOINCREMENT, song_number INTEGER, song_name TEXT, singer TEXT, pitch INTEGER)");
         db.execSQL("CREATE TABLE Folder(folder_id INTEGER PRIMARY KEY AUTOINCREMENT, folder_name TEXT DEFAULT (Undefined), bookmarks_num INTEGER DEFAULT 0)");
         db.execSQL("CREATE TABLE FolderBookmarkList(list_id INTEGER PRIMARY KEY AUTOINCREMENT, folder_id INTEGER, bookmark_id INTEGER)");
@@ -140,8 +139,6 @@ public class BookmarkDB extends SQLiteOpenHelper {
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
-
-        values.put();
     }
 
     public void getDirectories() {
