@@ -59,7 +59,7 @@ public class SearchFragment extends Fragment {
         searchImage = v.findViewById(R.id.searchImageView);
         searchStrEditText = v.findViewById(R.id.searchStrEditText);
         ScrollView searchedSongScrollView = v.findViewById(R.id.searchedSongScrollView);
-        searchedSongListLayout = new SearchedSongListLayout(getContext(), );
+        searchedSongListLayout = new SearchedSongListLayout(getContext());
         searchedSongScrollView.addView(searchedSongListLayout);
         //searchedSongListLayout = v.findViewById(R.id.searchedSongListLayout);
 
@@ -113,9 +113,7 @@ public class SearchFragment extends Fragment {
                 try {
                     ArrayList<SongInfo> newSearched = searchResult.get();
                     searchedSongsLiveData.postValue(newSearched);
-                } catch (ExecutionException e) {
-                    throw new RuntimeException(e);
-                } catch (InterruptedException e) {
+                } catch (ExecutionException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }
             }

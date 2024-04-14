@@ -101,7 +101,7 @@ public class SearchSong implements Callable<ArrayList<SongInfo>> {
                 .appendQueryParameter("strType",searchTypeMap.get(searchType))
                 .appendQueryParameter("natType", natTypeMap.get(natType))
                 .appendQueryParameter("strText", searchText)
-                .appendQueryParameter("strSize02", "100");
+                .appendQueryParameter("intPage", "");
 
         /*String url = "https://www.tjmedia.com/tjsong/song_search_list.asp";
         url = url + "?strType=" + searchTypeMap.get(searchType);
@@ -130,16 +130,19 @@ public class SearchSong implements Callable<ArrayList<SongInfo>> {
                 Elements elements = doc.select("div#BoardType1 table.board_type1 tbody tr td");
 
                 int songNum = elements.size() / 6;
-                //Log.e("TEST2", String.valueOf(songNum));
-                if(songNum == 0) break;
+                Log.e("TEST", String.valueOf(songNum));
+                if(songNum == 0) {
+
+                    break;
+                }
 
                 for(int i = 0; i < songNum; i++) {
                     int firstIdx = i * 6;
                     String number = elements.get(firstIdx).text();
                     String title = elements.get(firstIdx + 1).text();
                     String singer = elements.get(firstIdx + 2).text();
-                    Boolean is_bookmarked = bookmarkDB.getBookmark(number);
-                    SongInfo songInfo = new SongInfo(number, title, singer, is_bookmarked);
+                    //Boolean is_bookmarked = bookmarkDB.getBookmark(number);
+                    SongInfo songInfo = new SongInfo(number, title, singer, false);
                     songInfoList.add(songInfo);
                     Log.e("TEST", title);
                 }

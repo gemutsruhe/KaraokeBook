@@ -35,14 +35,14 @@ public class LibraryFragment extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_library, container, false);
         bookmarkDB = BookmarkDB.getInstance();
-        client = NetworkClient.getClient(this.getContext());
+        /*client = NetworkClient.getClient(this.getContext());
         api = client.create(LibraryAPI.class);
-        Call<User> addUser = api.adduser();
+        Call<User> addUser = api.addUser();
         try {
             User user = addUser.execute().body();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
         directoryListLayout = v.findViewById(R.id.directoryListLayout);
 
         //directoryListLayout

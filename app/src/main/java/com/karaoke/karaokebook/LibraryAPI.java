@@ -10,9 +10,9 @@ public interface LibraryAPI {
     @GET("/users/{id}")
     Call<User> user(@Path("id") int id);
 
-    @POST("/user")
-    Call<User> adduser();
+    @POST("/users")
+    Call<User> assignUser(@Body User user);
 
-    @POST("/user/{id}")
+    @POST("/users/{id}")
     Call<User> addAccount(@Body User user);
 }

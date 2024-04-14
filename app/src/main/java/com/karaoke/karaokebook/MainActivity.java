@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        requestPermission();
+
 
         searchFragment = new SearchFragment();
         libraryFragment = new LibraryFragment();
@@ -57,10 +57,6 @@ public class MainActivity extends AppCompatActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //FragmentTransaction ft = fragmentManager.beginTransaction();
-                //ft.replace(R.id.fragmentFrame, searchFragment);
-                //fragmentManager.popBackStack();
-                //ft.commit();
                 fragmentManager.beginTransaction().hide(libraryFragment).commit();
                 fragmentManager.beginTransaction().show(searchFragment).commit();
             }
@@ -69,33 +65,11 @@ public class MainActivity extends AppCompatActivity {
         libraryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // ft = fragmentManager.beginTransaction();
-                //ft.replace(R.id.fragmentFrame, libraryFragment);
-                //ft.add(R.id.fragmentFrame, libraryFragment);
-                //ft.commit();
                 fragmentManager.beginTransaction().hide(searchFragment).commit();
                 fragmentManager.beginTransaction().show(libraryFragment).commit();
             }
         });
     }
 
-    void requestPermission() {
-        PermissionListener permissionlistener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                Log.e("TEST", "Granted");
-            }
 
-            @Override
-            public void onPermissionDenied(List<String> deniedPermissions) {
-                Log.e("TEST", "Denied");
-            }
-        };
-
-        TedPermission.create()
-                .setPermissionListener(permissionlistener)
-                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                .setPermissions(Manifest.permission.INTERNET)
-                .check();
-    }
 }
