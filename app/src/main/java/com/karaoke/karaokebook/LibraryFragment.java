@@ -11,6 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.karaoke.karaokebook.databinding.CellFolderBinding;
+import com.karaoke.karaokebook.databinding.FragmentLibraryBinding;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,40 +22,23 @@ import retrofit2.Retrofit;
 
 public class LibraryFragment extends Fragment {
 
-    View v;
-
     LinearLayout directoryListLayout;
 
-    boolean rootDirectory;
-
-    ArrayList<Boolean> isFolderList;
     BookmarkDB bookmarkDB;
-    Retrofit client;
-    LibraryAPI api;
+    FragmentLibraryBinding binding;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.fragment_library, container, false);
+        binding = FragmentLibraryBinding.inflate(getLayoutInflater(), container, false);
         bookmarkDB = BookmarkDB.getInstance();
-        /*client = NetworkClient.getClient(this.getContext());
-        api = client.create(LibraryAPI.class);
-        Call<User> addUser = api.addUser();
-        try {
-            User user = addUser.execute().body();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
-        directoryListLayout = v.findViewById(R.id.directoryListLayout);
 
-        //directoryListLayout
+        directoryListLayout = binding.directoryListLayout;
 
-        View folder = inflater.inflate(R.layout.cell_folder, directoryListLayout, false);
-        if(folder != null) {
-            directoryListLayout.addView(folder);
-        }
+        CellFolderBinding folderBinding = CellFolderBinding.inflate(getLayoutInflater(), directoryListLayout, false);
+        directoryListLayout.addView(folderBinding.getRoot());
 
-        return v;
+        return binding.getRoot();
     }
 
 

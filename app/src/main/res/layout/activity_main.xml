@@ -27,7 +27,7 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <Button
-            android:id="@+id/btn_fragmentA"
+            android:id="@+id/btn_search_fragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,7 +38,7 @@
             android:text="검색" />
 
         <Button
-            android:id="@+id/btn_fragmentB"
+            android:id="@+id/btn_library_fragment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

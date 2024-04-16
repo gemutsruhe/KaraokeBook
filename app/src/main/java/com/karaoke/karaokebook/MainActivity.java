@@ -14,26 +14,30 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
+import com.karaoke.karaokebook.databinding.ActivityMainBinding;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     SearchFragment searchFragment;
     LibraryFragment libraryFragment;
-    Button searchButton;
-    Button libraryButton;
+    Button searchFragmentButton;
+    Button libraryFragmentButton;
+    ActivityMainBinding binding;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
 
 
         searchFragment = new SearchFragment();
         libraryFragment = new LibraryFragment();
 
-        searchButton = findViewById(R.id.btn_fragmentA);
-        libraryButton = findViewById(R.id.btn_fragmentB);
+        searchFragmentButton = binding.btnSearchFragment;
+        libraryFragmentButton = binding.btnLibraryFragment;
 
         FragmentManager fragmentManager = getSupportFragmentManager();
 
@@ -54,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
+        searchFragmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction().hide(libraryFragment).commit();
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        libraryButton.setOnClickListener(new View.OnClickListener() {
+        libraryFragmentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction().hide(searchFragment).commit();

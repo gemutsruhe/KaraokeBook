@@ -36,60 +36,6 @@ public class SearchSong implements Callable<ArrayList<SongInfo>> {
         put("일본", "JPN");
     }
     };
-    /*
-    public static ArrayList<SongInfo> search(String searchType, String natType, String str) {
-        //https://www.tjmedia.com/tjsong/song_search_list.asp?strType=1&natType=JPN&strText=%EC%95%84%EC%9D%B4%EB%8F%8C&strCond=0&searchOrderType=&searchOrderItem=&intPage=2
-        String url = "https://www.tjmedia.com/tjsong/song_search_list.asp";
-        url = url + "?strType=" + searchTypeMap.get(searchType);
-        url = url + "&natType=" + natTypeMap.get(natType);
-        url = url + "&strText=" + str;
-        url = url + "&strSize02=100";
-        url = url + "&searchOrderType=&searchOrderItem=&intPage=";
-
-        //Log.e("TEST", url);
-        BookmarkDB bookmarkDB = BookmarkDB.getInstance();
-        ArrayList<SongInfo> songInfoList = new ArrayList<>();
-
-        String finalUrl = url;
-        MutableLiveData<ArrayList<SongInfo>> searchedSongsLiveData = null;
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int pageNum = 1;
-                while(true) {
-                    String pageUrl = finalUrl + pageNum;
-                    Log.e("TEST", pageUrl);
-                    try {
-                        Document doc = Jsoup.connect(pageUrl).get();
-                        Element boardType1 = doc.selectFirst("div#BoardType1");
-                        Element boardTable = boardType1.selectFirst("table.board_type1");
-
-                        Elements elements = boardTable.select("tbody > tr > td");
-                        int songNum = elements.size() / 6;
-                        //Log.e("TEST2", String.valueOf(songNum));
-                        if(songNum == 0) break;
-
-                        for(int i = 0; i < songNum; i++) {
-                            int firstIdx = i * 6;
-                            String number = elements.get(firstIdx).text();
-                            String title = elements.get(firstIdx + 1).text();
-                            String singer = elements.get(firstIdx + 2).text();
-                            Boolean is_bookmarked = bookmarkDB.getBookmarkList(number);
-                            SongInfo songInfo = new SongInfo(number, title, singer, is_bookmarked);
-                            songInfoList.add(songInfo);
-                            Log.e("TEST", title);
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    pageNum++;
-                }
-            }
-        });
-        thread.start();
-
-        return searchedSongsLiveData.getValue();
-    }*/
 
     private String buildURL() {
         URI uri = URI.create("https://www.tjmedia.com/tjsong/song_search_list.asp");
@@ -102,13 +48,6 @@ public class SearchSong implements Callable<ArrayList<SongInfo>> {
                 .appendQueryParameter("natType", natTypeMap.get(natType))
                 .appendQueryParameter("strText", searchText)
                 .appendQueryParameter("intPage", "");
-
-        /*String url = "https://www.tjmedia.com/tjsong/song_search_list.asp";
-        url = url + "?strType=" + searchTypeMap.get(searchType);
-        url = url + "&natType=" + natTypeMap.get(natType);
-        url = url + "&strText=" + searchText;
-        url = url + "&strSize02=100";
-        url = url + "&searchOrderType=&searchOrderItem=&intPage=";*/
 
         return builder.toString();
     }

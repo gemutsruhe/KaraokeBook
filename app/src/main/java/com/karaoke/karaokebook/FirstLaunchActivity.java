@@ -91,7 +91,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
         LibraryAPI api = retrofit.create(LibraryAPI.class);
         //User user = User.getInstance();
         User user = new User();
-        Log.e("TEST", "call");
+
         Call<User> call = api.assignUser(user);
         call.enqueue(new Callback<User>() {
             @Override
