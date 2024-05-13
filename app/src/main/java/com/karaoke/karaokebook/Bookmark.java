@@ -1,8 +1,13 @@
 package com.karaoke.karaokebook;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Bookmark {
-    private String songName;
+    @SerializedName("song_num")
     private int songNumber;
+    @SerializedName("song_name")
+    private String songName;
+    @SerializedName("pitch")
     private int pitch;
 
     public int getSongNumber() {

@@ -1,7 +1,6 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.search;
 
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -19,6 +16,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.karaoke.karaokebook.BookmarkDB;
+import com.karaoke.karaokebook.SongInfo;
 import com.karaoke.karaokebook.databinding.FragmentSearchBinding;
 
 import java.util.ArrayList;
@@ -51,6 +50,7 @@ public class SearchFragment extends Fragment {
         executorService = Executors.newSingleThreadExecutor();
         binding = FragmentSearchBinding.inflate(inflater, container, false);
 
+        //.addView(binding.getRoot());
         searchedSongListLayout = new SearchedSongListLayout(getContext());
         binding.searchedSongScrollView.addView(searchedSongListLayout);
 

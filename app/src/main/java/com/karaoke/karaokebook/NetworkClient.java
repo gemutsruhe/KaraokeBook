@@ -18,8 +18,4 @@ public class NetworkClient {
 
         return retrofit;
     }
-
-    public static void addUser() {
-
-    }
 }

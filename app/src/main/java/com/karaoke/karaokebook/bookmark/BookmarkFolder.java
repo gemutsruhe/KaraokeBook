@@ -1,4 +1,6 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.bookmark;
+
+import com.karaoke.karaokebook.Bookmark;
 
 import java.util.ArrayList;
 

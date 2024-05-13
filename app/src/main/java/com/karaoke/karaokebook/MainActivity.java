@@ -1,6 +1,5 @@
 package com.karaoke.karaokebook;
 
-import android.Manifest;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,9 +11,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.normal.TedPermission;
+import com.karaoke.karaokebook.bookmark.LibraryFragment;
 import com.karaoke.karaokebook.databinding.ActivityMainBinding;
+import com.karaoke.karaokebook.search.SearchFragment;
 
 import java.util.List;
 
@@ -24,6 +23,10 @@ public class MainActivity extends AppCompatActivity {
     Button searchFragmentButton;
     Button libraryFragmentButton;
     ActivityMainBinding binding;
+    FragmentManager fragmentManager;
+    FragmentTransaction ft;
+
+    Fragment crtFragment = null;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,49 +34,53 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        searchFragmentButton = binding.btnSearchFragment;
+        libraryFragmentButton = binding.btnLibraryFragment;
 
+        fragmentManager = getSupportFragmentManager();
 
         searchFragment = new SearchFragment();
         libraryFragment = new LibraryFragment();
 
-        searchFragmentButton = binding.btnSearchFragment;
-        libraryFragmentButton = binding.btnLibraryFragment;
+        addFragments();
+        ft.show(searchFragment);
+        ft.hide(libraryFragment);
+        //showFragment(searchFragment);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        searchFragmentButton.setOnClickListener(view -> {
+            showFragment(searchFragment);
+        });
 
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        Fragment searchFragment = new SearchFragment();
-        Fragment libraryFragment = new LibraryFragment();
+        libraryFragmentButton.setOnClickListener(view -> {
+            showFragment(libraryFragment);
+        });
 
-        fragmentManager.beginTransaction().add(R.id.fragmentFrame, searchFragment).commit();
-        fragmentManager.beginTransaction().add(R.id.fragmentFrame, libraryFragment).commit();
 
-        fragmentManager.beginTransaction().hide(libraryFragment).commit();
+    }
 
-        while(BookmarkDB.createInstance(getApplicationContext()) == null) {
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+    private void addFragments() {
+        ft = fragmentManager.beginTransaction();
+
+        ft.add(R.id.fragmentFrame, searchFragment);
+        ft.add(R.id.fragmentFrame, libraryFragment);
+
+        ft.commit();
+    }
+    private void showFragment(Fragment target) {
+        ft = fragmentManager.beginTransaction();
+
+        List<Fragment> fragmentList = fragmentManager.getFragments();
+        for(Fragment fragment : fragmentList) {
+            if(fragment.equals(target)) {
+                Log.e("TEST", "show");
+                ft.show(fragment);
+            } else {
+                Log.e("TEST", "hide");
+                ft.hide(fragment);
             }
         }
 
-        searchFragmentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentManager.beginTransaction().hide(libraryFragment).commit();
-                fragmentManager.beginTransaction().show(searchFragment).commit();
-            }
-        });
-
-        libraryFragmentButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fragmentManager.beginTransaction().hide(searchFragment).commit();
-                fragmentManager.beginTransaction().show(libraryFragment).commit();
-            }
-        });
+        ft.commit();
     }
-
 
 }

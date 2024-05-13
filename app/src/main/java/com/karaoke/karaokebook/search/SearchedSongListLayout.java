@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.search;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,6 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.karaoke.karaokebook.BookmarkDB;
+import com.karaoke.karaokebook.LibraryAPI;
+import com.karaoke.karaokebook.R;
+import com.karaoke.karaokebook.SongInfo;
 import com.karaoke.karaokebook.databinding.CellSearchedSongBinding;
 
 import java.util.ArrayList;
@@ -76,17 +80,14 @@ public class SearchedSongListLayout extends LinearLayout {
     private void setBookmark(ImageView bookmarkImageView, SongInfo songInfo, boolean isBookmarked) {
         if(isBookmarked) bookmarkImageView.setImageResource(R.drawable.checked_bookmark);
         bookmarkImageView.setEnabled(true);
-        bookmarkImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Drawable uncheckedBookmark = getResources().getDrawable(R.drawable.unchecked_bookmark, getContext().getTheme());
-                if(bookmarkImageView.getDrawable().getConstantState().equals(uncheckedBookmark.getConstantState())) {
-                    bookmarkImageView.setImageResource(R.drawable.checked_bookmark);
-                    bookmarkDB.addBookmark(songInfo);
-                } else {
-                    bookmarkImageView.setImageResource(R.drawable.unchecked_bookmark);
-                    bookmarkDB.removeBookmark(songInfo);
-                }
+        bookmarkImageView.setOnClickListener(view -> {
+            Drawable uncheckedBookmark = getResources().getDrawable(R.drawable.unchecked_bookmark, getContext().getTheme());
+            if(bookmarkImageView.getDrawable().getConstantState().equals(uncheckedBookmark.getConstantState())) {
+                bookmarkImageView.setImageResource(R.drawable.checked_bookmark);
+                bookmarkDB.addBookmark(songInfo);
+            } else {
+                bookmarkImageView.setImageResource(R.drawable.unchecked_bookmark);
+                bookmarkDB.removeBookmark(songInfo);
             }
         });
     }

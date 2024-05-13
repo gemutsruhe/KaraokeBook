@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.bookmark;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.karaoke.karaokebook.BookmarkDB;
 import com.karaoke.karaokebook.databinding.CellFolderBinding;
 import com.karaoke.karaokebook.databinding.FragmentLibraryBinding;
 
@@ -22,7 +23,7 @@ import retrofit2.Retrofit;
 
 public class LibraryFragment extends Fragment {
 
-    LinearLayout directoryListLayout;
+    LinearLayout folderListLayout;
 
     BookmarkDB bookmarkDB;
     FragmentLibraryBinding binding;
@@ -33,10 +34,10 @@ public class LibraryFragment extends Fragment {
         binding = FragmentLibraryBinding.inflate(getLayoutInflater(), container, false);
         bookmarkDB = BookmarkDB.getInstance();
 
-        directoryListLayout = binding.directoryListLayout;
+        //folderListLayout = binding.folderListLayout;
 
-        CellFolderBinding folderBinding = CellFolderBinding.inflate(getLayoutInflater(), directoryListLayout, false);
-        directoryListLayout.addView(folderBinding.getRoot());
+        CellFolderBinding folderBinding = CellFolderBinding.inflate(getLayoutInflater(), folderListLayout, false);
+        folderListLayout.addView(folderBinding.getRoot());
 
         return binding.getRoot();
     }
@@ -47,11 +48,9 @@ public class LibraryFragment extends Fragment {
         super.onHiddenChanged(hidden);
 
         if(!hidden) {
-            Log.e("TEST", "not hidden");
 
-            bookmarkDB.getBookmarkList();
         } else {
-            Log.e("TEST", "hidden");
+
         }
     }
 }

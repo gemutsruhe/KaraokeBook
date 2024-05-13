@@ -10,20 +10,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.karaoke.karaokebook.bookmark.BookmarkFolder;
+
 import java.util.ArrayList;
 
 public class BookmarkDB extends SQLiteOpenHelper {
-
-    /*static final String DATABASE_NAME = "bookmarkList.db";
-
-    static final String BOOKMARK_TABLE_NAME = "Bookmark";
-    static final String FOLDER_TABLE_NAME = "Folder";
-    static final String FOLDER_BOOKMARK_TABLE_NAME = "FolderBookmarkList";
-    static final String TABLE_NAME = "Bookmark";
-    static final String COL_NUMBER = "number";
-    static final String COL_NAME = "name";
-    static final String COL_SINGER = "singer";
-    static final String COL_PITCH = "pitch";*/
 
     private static BookmarkDB dbInstance = null;
     private BookmarkDB(Context context, int version) {

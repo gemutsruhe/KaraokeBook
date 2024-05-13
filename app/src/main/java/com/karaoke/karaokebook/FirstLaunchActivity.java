@@ -1,6 +1,7 @@
 package com.karaoke.karaokebook;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,10 +11,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.Task;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 import com.karaoke.karaokebook.databinding.ActivityFirstLaunchBinding;
@@ -33,7 +42,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     String sharedPrefKey;
     private ActivityFirstLaunchBinding binding;
-
+    ActivityResultLauncher<Intent> registerForActivityResult;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,17 +56,43 @@ public class FirstLaunchActivity extends AppCompatActivity {
 
         binding = ActivityFirstLaunchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.useWithoutLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        assignUserId();
-                    }
-                }).start();
+
+        binding.useWithoutLogin.setOnClickListener(view -> new Thread(this::assignUser).start());
+        binding.googleLoginBtn.setOnClickListener(view -> {
+            assignUser();
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+
+            GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
+            Intent signInIntent = googleSignInClient.getSignInIntent();
+            registerForActivityResult.launch(signInIntent);
+            addAccount();
+        });
+
+        GoogleSignInAccount gsa = GoogleSignIn.getLastSignedInAccount(FirstLaunchActivity.this);
+        if(gsa != null) {
+
+        }
+
+        registerForActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if(result.getResultCode() == Activity.RESULT_OK) {
+                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                handleSignInResult(task);
+
             }
         });
+    }
+
+    private void handleSignInResult(Task<GoogleSignInAccount> task) {
+        try {
+            GoogleSignInAccount account = task.getResult(ApiException.class);
+
+            String email = account.getEmail();
+            Log.e("TEST", email);
+        } catch (ApiException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     void requestPermission() {
@@ -86,13 +121,14 @@ public class FirstLaunchActivity extends AppCompatActivity {
         finish();
     }
 
-    private void assignUserId() {
+    private void assignUser() {
         Retrofit retrofit = NetworkClient.getClient(getApplicationContext());
         LibraryAPI api = retrofit.create(LibraryAPI.class);
-        //User user = User.getInstance();
+
         User user = new User();
 
         Call<User> call = api.assignUser(user);
+
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(@NonNull Call<User> call, @NonNull Response<User> response) {
@@ -113,5 +149,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
         });
     }
 
+    private void addAccount() {
 
+    }
 }

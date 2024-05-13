@@ -11,13 +11,19 @@
         android:orientation="horizontal"
         android:layout_margin="10dp">
 
-
-        <TextView
-            android:id="@+id/dummyTextView"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/showFoldersButton"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="dummy" />
+            android:text="북마크 목록" />
+
+        <Button
+            android:id="@+id/showBookmarksButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="폴더" />
     </LinearLayout>
 
     <ScrollView
@@ -25,7 +31,7 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:id="@+id/directoryListLayout"
+            android:id="@+id/itemsListLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

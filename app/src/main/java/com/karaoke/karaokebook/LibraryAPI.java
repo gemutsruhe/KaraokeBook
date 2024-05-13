@@ -15,4 +15,10 @@ public interface LibraryAPI {
 
     @POST("/users/{id}")
     Call<User> addAccount(@Body User user);
+
+    @GET("/folder/{id}")
+    Call<User> getFolderList(@Path("id") int id);
+
+    @GET("/bookmark/{id}")
+    Call<Bookmark> getBookmarkList(@Path("id") int id);
 }

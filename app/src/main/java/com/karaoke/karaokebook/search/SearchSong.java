@@ -1,7 +1,10 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.search;
 
 import android.net.Uri;
 import android.util.Log;
+
+import com.karaoke.karaokebook.BookmarkDB;
+import com.karaoke.karaokebook.SongInfo;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
