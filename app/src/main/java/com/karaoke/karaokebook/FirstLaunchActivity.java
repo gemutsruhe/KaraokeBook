@@ -41,6 +41,9 @@ import retrofit2.Retrofit;
 public class FirstLaunchActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     String sharedPrefKey;
+
+    Retrofit retrofit = NetworkClient.getClient(getApplicationContext());
+    LibraryAPI api = retrofit.create(LibraryAPI.class);
     private ActivityFirstLaunchBinding binding;
     ActivityResultLauncher<Intent> registerForActivityResult;
     @Override
@@ -50,24 +53,25 @@ public class FirstLaunchActivity extends AppCompatActivity {
         requestPermission();
 
         sharedPref = this.getSharedPreferences(getString(R.string.shared_pref), Context.MODE_PRIVATE);
-        if (sharedPref.contains(sharedPrefKey)) {
+        /*if (sharedPref.contains(sharedPrefKey)) {
             goToMainActivity();
-        }
+        }*/
 
         binding = ActivityFirstLaunchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         binding.useWithoutLogin.setOnClickListener(view -> new Thread(this::assignUser).start());
         binding.googleLoginBtn.setOnClickListener(view -> {
-            assignUser();
+
             GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
                     .build();
 
             GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
             Intent signInIntent = googleSignInClient.getSignInIntent();
+
             registerForActivityResult.launch(signInIntent);
-            addAccount();
+
         });
 
         GoogleSignInAccount gsa = GoogleSignIn.getLastSignedInAccount(FirstLaunchActivity.this);
@@ -78,18 +82,35 @@ public class FirstLaunchActivity extends AppCompatActivity {
         registerForActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if(result.getResultCode() == Activity.RESULT_OK) {
                 Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                handleSignInResult(task);
+                String email = getLoginEmail(task);
+
+                new Thread(() -> {
+                    Call<User> call = api.findAssignedEmail(email);
+                    call.enqueue(new Callback<User>() {
+                        @Override
+                        public void onResponse(Call<User> call, Response<User> response) {
+                            User user = response.body();
+                            int id = user.getId();
+
+                        }
+
+                        @Override
+                        public void onFailure(Call<User> call, Throwable throwable) {
+
+                        }
+                    });
+                });
+
 
             }
         });
     }
 
-    private void handleSignInResult(Task<GoogleSignInAccount> task) {
+    private String getLoginEmail(Task<GoogleSignInAccount> task) {
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
 
-            String email = account.getEmail();
-            Log.e("TEST", email);
+            return account.getEmail();
         } catch (ApiException e) {
             throw new RuntimeException(e);
         }
@@ -122,11 +143,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
     }
 
     private void assignUser() {
-        Retrofit retrofit = NetworkClient.getClient(getApplicationContext());
-        LibraryAPI api = retrofit.create(LibraryAPI.class);
-
         User user = new User();
-
         Call<User> call = api.assignUser(user);
 
         call.enqueue(new Callback<User>() {
