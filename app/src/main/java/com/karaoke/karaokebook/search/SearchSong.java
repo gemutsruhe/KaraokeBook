@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.karaoke.karaokebook.BookmarkDB;
-import com.karaoke.karaokebook.SongInfo;
+import com.karaoke.karaokebook.CellData.SongCellData;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
-public class SearchSong implements Callable<ArrayList<SongInfo>> {
+public class SearchSong implements Callable<ArrayList<SongCellData>> {
     private String searchType;
     private String natType;
     private String searchText;
@@ -56,11 +56,11 @@ public class SearchSong implements Callable<ArrayList<SongInfo>> {
     }
 
     @Override
-    public ArrayList<SongInfo> call() throws Exception {
+    public ArrayList<SongCellData> call() throws Exception {
         String url = buildURL();
 
         BookmarkDB bookmarkDB = BookmarkDB.getInstance();
-        ArrayList<SongInfo> songInfoList = new ArrayList<>();
+        ArrayList<SongCellData> songCellDataList = new ArrayList<>();
 
         int pageNum = 1;
         while(true) {
@@ -84,8 +84,8 @@ public class SearchSong implements Callable<ArrayList<SongInfo>> {
                     String title = elements.get(firstIdx + 1).text();
                     String singer = elements.get(firstIdx + 2).text();
                     //Boolean is_bookmarked = bookmarkDB.getBookmark(number);
-                    SongInfo songInfo = new SongInfo(number, title, singer, false);
-                    songInfoList.add(songInfo);
+                    SongCellData songCellData = new SongCellData(number, title, singer, false);
+                    songCellDataList.add(songCellData);
                     Log.e("TEST", title);
                 }
             } catch (IOException e) {
@@ -94,6 +94,6 @@ public class SearchSong implements Callable<ArrayList<SongInfo>> {
             pageNum++;
         }
 
-        return songInfoList;
+        return songCellDataList;
     }
 }

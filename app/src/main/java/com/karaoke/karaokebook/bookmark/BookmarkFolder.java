@@ -1,14 +1,14 @@
 package com.karaoke.karaokebook.bookmark;
 
-import com.karaoke.karaokebook.Bookmark;
+import com.karaoke.karaokebook.CellData.BookmarkCellData;
 
 import java.util.ArrayList;
 
 public class BookmarkFolder {
-    private ArrayList<Bookmark> bookmarkList;
+    private ArrayList<BookmarkCellData> bookmarkCellDataList;
     private String name;
 
-    BookmarkFolder(ArrayList<Bookmark> bookmarkList) {
+    BookmarkFolder(ArrayList<BookmarkCellData> bookmarkCellDataList) {
 
     }
 
@@ -16,11 +16,11 @@ public class BookmarkFolder {
         return name;
     }
 
-    public void addBookmark(Bookmark bookmark) {
-        bookmarkList.add(bookmark);
+    public void addBookmark(BookmarkCellData bookmarkCellData) {
+        bookmarkCellDataList.add(bookmarkCellData);
     }
 
-    public ArrayList<Bookmark> getBookmarkList() {
-        return bookmarkList;
+    public ArrayList<BookmarkCellData> getBookmarkList() {
+        return bookmarkCellDataList;
     }
 }

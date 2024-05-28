@@ -1,5 +1,7 @@
 package com.karaoke.karaokebook;
 
+import com.karaoke.karaokebook.CellData.BookmarkCellData;
+
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -22,5 +24,5 @@ public interface LibraryAPI {
     Call<User> getFolderList(@Path("id") int id);
 
     @GET("bookmark/{id}")
-    Call<Bookmark> getBookmarkList(@Path("id") int id);
+    Call<BookmarkCellData> getBookmarkList(@Path("id") int id);
 }

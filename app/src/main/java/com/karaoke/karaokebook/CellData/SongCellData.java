@@ -1,13 +1,13 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.CellData;
 
-public class SongInfo {
+public class SongCellData implements CellData {
     private String number;
     private String title;
     private String singer;
     private Integer pitch;
     private boolean bookmarked;
 
-    public SongInfo(String number, String title, String singer, boolean bookmarked) {
+    public SongCellData(String number, String title, String singer, boolean bookmarked) {
         this.number = number;
         this.title = title;
         this.singer = singer;
@@ -15,7 +15,7 @@ public class SongInfo {
         pitch = 0;
     }
 
-    public SongInfo(String number, String title, String singer, boolean bookmarked, Integer pitch) {
+    public SongCellData(String number, String title, String singer, boolean bookmarked, Integer pitch) {
         this.number = number;
         this.title = title;
         this.singer = singer;

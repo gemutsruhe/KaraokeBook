@@ -10,6 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.karaoke.karaokebook.CellData.BookmarkCellData;
+import com.karaoke.karaokebook.CellData.SongCellData;
 import com.karaoke.karaokebook.bookmark.BookmarkFolder;
 
 import java.util.ArrayList;
@@ -34,7 +36,7 @@ public class BookmarkDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        SongInfo songInfo;
+        SongCellData songCellData;
         //songInfo.ge
         db.execSQL("CREATE TABLE Bookmark(bookmark_id INTEGER PRIMARY KEY AUTOINCREMENT, song_number INTEGER, song_name TEXT, singer TEXT, pitch INTEGER)");
         db.execSQL("CREATE TABLE Folder(folder_id INTEGER PRIMARY KEY AUTOINCREMENT, folder_name TEXT DEFAULT (Undefined), bookmarks_num INTEGER DEFAULT 0)");
@@ -57,7 +59,7 @@ public class BookmarkDB extends SQLiteOpenHelper {
         return isBookmarked;
     }
 
-    public ArrayList<SongInfo> getBookmarkList() {
+    public ArrayList<SongCellData> getBookmarkList() {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM Bookmark", null);
@@ -74,13 +76,13 @@ public class BookmarkDB extends SQLiteOpenHelper {
         return null;
     }
 
-    public ArrayList<Boolean> getBookmarkList(ArrayList<SongInfo> songInfoList) {
+    public ArrayList<Boolean> getBookmarkList(ArrayList<SongCellData> songCellDataList) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ArrayList<Boolean> is_bookmarked = new ArrayList<>();
 
-        for(SongInfo songInfo : songInfoList) {
-            String number = songInfo.getNumber();
+        for(SongCellData songCellData : songCellDataList) {
+            String number = songCellData.getNumber();
             Cursor cursor = db.rawQuery("SELECT * FROM Bookmark WHERE number = " + number, null);
             if(cursor.getCount() != 0) {
                 is_bookmarked.add(true);
@@ -92,22 +94,22 @@ public class BookmarkDB extends SQLiteOpenHelper {
         return is_bookmarked;
     }
 
-    public void addBookmark(SongInfo songInfo) {
+    public void addBookmark(SongCellData songCellData) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COL_NUMBER, songInfo.getNumber());
-        values.put(COL_NAME, songInfo.getTitle());
-        values.put(COL_SINGER, songInfo.getSinger());
-        values.put(COL_PITCH, songInfo.getPitch());
+        values.put(COL_NUMBER, songCellData.getNumber());
+        values.put(COL_NAME, songCellData.getTitle());
+        values.put(COL_SINGER, songCellData.getSinger());
+        values.put(COL_PITCH, songCellData.getPitch());
 
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
 
-    public void removeBookmark(SongInfo songInfo) {
+    public void removeBookmark(SongCellData songCellData) {
         SQLiteDatabase db = this.getWritableDatabase();
         String whereClause = COL_NUMBER + "=?";
-        String[] whereArgs = {String.valueOf(songInfo.getNumber())};
+        String[] whereArgs = {String.valueOf(songCellData.getNumber())};
 
         db.delete(TABLE_NAME, whereClause, whereArgs);
         db.close();
@@ -123,10 +125,10 @@ public class BookmarkDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addBookmarkToFolder(Bookmark bookmark, BookmarkFolder bookmarkFolder) {
-        int songNumber = bookmark.getSongNumber();
-        String songName = bookmark.getSongName();
-        int pitch = bookmark.getPitch();
+    public void addBookmarkToFolder(BookmarkCellData bookmarkCellData, BookmarkFolder bookmarkFolder) {
+        int songNumber = bookmarkCellData.getSongNumber();
+        String songName = bookmarkCellData.getSongName();
+        int pitch = bookmarkCellData.getPitch();
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();

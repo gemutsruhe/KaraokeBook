@@ -17,7 +17,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import com.karaoke.karaokebook.BookmarkDB;
-import com.karaoke.karaokebook.SongInfo;
+import com.karaoke.karaokebook.CellData.SongCellData;
 import com.karaoke.karaokebook.databinding.FragmentSearchBinding;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class SearchFragment extends Fragment {
     String[] natList = {"한국", "팝송", "일본"};
     String[] typeList = {"제목", "가수", "가사"};
 
-    LiveData<ArrayList<SongInfo>> searchedSongs;
+    LiveData<ArrayList<SongCellData>> searchedSongs;
     BookmarkDB bookmarkDB;
     ExecutorService executorService;
     boolean searching = false;
@@ -57,10 +57,10 @@ public class SearchFragment extends Fragment {
         setSpinnerAdapter(binding.typeSpinner, typeList);
         setSpinnerAdapter(binding.natSpinner, natList);
         searchedSongs = new MutableLiveData<>();
-        searchedSongs.observe(getViewLifecycleOwner(), new Observer<ArrayList<SongInfo>>() {
+        searchedSongs.observe(getViewLifecycleOwner(), new Observer<ArrayList<SongCellData>>() {
             @Override
-            public void onChanged(ArrayList<SongInfo> songInfoList) {
-                searchedSongListLayout.addSearchedSongs(songInfoList);
+            public void onChanged(ArrayList<SongCellData> songCellDataList) {
+                searchedSongListLayout.addSearchedSongs(songCellDataList);
                 searching = false;
             }
         });
@@ -96,9 +96,9 @@ public class SearchFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    Future<ArrayList<SongInfo>> searchResult = executorService.submit(new SearchSong(searchType, natName, searchText));
+                    Future<ArrayList<SongCellData>> searchResult = executorService.submit(new SearchSong(searchType, natName, searchText));
 
-                    ((MutableLiveData<ArrayList<SongInfo>>)searchedSongs).postValue(searchResult.get());
+                    ((MutableLiveData<ArrayList<SongCellData>>)searchedSongs).postValue(searchResult.get());
                 } catch (ExecutionException | InterruptedException e) {
                     throw new RuntimeException(e);
                 }

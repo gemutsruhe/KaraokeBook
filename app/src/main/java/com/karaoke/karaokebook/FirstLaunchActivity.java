@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -81,17 +82,19 @@ public class FirstLaunchActivity extends AppCompatActivity {
 
         registerForActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
             if(result.getResultCode() == Activity.RESULT_OK) {
-                Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
-                String email = getLoginEmail(task);
-
                 new Thread(() -> {
+
+                    String email = getLoginEmail(result);
+
                     Call<User> call = api.findAssignedEmail(email);
                     call.enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
                             User user = response.body();
                             int id = user.getId();
+                            if(id == -1) {
 
+                            }
                         }
 
                         @Override
@@ -99,14 +102,15 @@ public class FirstLaunchActivity extends AppCompatActivity {
 
                         }
                     });
-                });
+                }).start();
 
 
             }
         });
     }
 
-    private String getLoginEmail(Task<GoogleSignInAccount> task) {
+    private String getLoginEmail(ActivityResult result) {
+        Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(result.getData());
         try {
             GoogleSignInAccount account = task.getResult(ApiException.class);
 
