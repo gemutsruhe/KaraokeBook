@@ -2,17 +2,18 @@ package com.karaoke.karaokebook.search;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
 
-import com.karaoke.karaokebook.BookmarkDB;
-import com.karaoke.karaokebook.LibraryAPI;
+import com.karaoke.karaokebook.data.local.BookmarkDB;
+import com.karaoke.karaokebook.data.cell.SongCellData;
+import com.karaoke.karaokebook.factory.CellFactoryProvider;
+import com.karaoke.karaokebook.factory.SearchedSongCellFactory;
+import com.karaoke.karaokebook.data.remote.LibraryAPI;
 import com.karaoke.karaokebook.R;
-import com.karaoke.karaokebook.CellFactory.SearchedSongCellFactory;
-import com.karaoke.karaokebook.CellData.SongCellData;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Retrofit;
 
@@ -25,6 +26,7 @@ public class SearchedSongListLayout extends LinearLayout {
     Retrofit client;
     LibraryAPI api;
     SharedPreferences sharedPref;
+    CellFactoryProvider cellFactoryProvider;
     public SearchedSongListLayout(Context context) {
         super(context);
         this.setOrientation(LinearLayout.VERTICAL);
@@ -33,16 +35,16 @@ public class SearchedSongListLayout extends LinearLayout {
         //bookmarkDB = BookmarkDB.getInstance();
         sharedPref = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
-        Resources resources = getResources();
+        cellFactoryProvider = new CellFactoryProvider(new SearchedSongCellFactory(context, this));
     }
 
-    public void addSearchedSongs(ArrayList<SongCellData> searchedSongCellDataList) {
+    public void addSearchedSongs(List<SongCellData> searchedSongCellDataList) {
         this.removeAllViews();
 
         if(searchedSongCellDataList != null) {
             for(int i = 0; i < searchedSongCellDataList.size(); i++) {
-                //LinearLayout searchedSongCell = SearchedSongCellFactory.create(searchedSongCellDataList.get(i));
-                //this.addView(searchedSongCell, i);
+                View searchedSongCell = cellFactoryProvider.createCell(searchedSongCellDataList.get(i));
+                this.addView(searchedSongCell, i);
             }
         }
     }

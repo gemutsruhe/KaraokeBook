@@ -1,6 +1,6 @@
 package com.karaoke.karaokebook.bookmark;
 
-import com.karaoke.karaokebook.CellData.BookmarkCellData;
+import com.karaoke.karaokebook.data.cell.BookmarkCellData;
 
 import java.util.ArrayList;
 

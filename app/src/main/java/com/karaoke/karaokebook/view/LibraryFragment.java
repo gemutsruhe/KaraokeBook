@@ -1,7 +1,6 @@
-package com.karaoke.karaokebook.bookmark;
+package com.karaoke.karaokebook.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,15 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.karaoke.karaokebook.BookmarkDB;
+import com.karaoke.karaokebook.data.local.BookmarkDB;
 import com.karaoke.karaokebook.databinding.CellFolderBinding;
 import com.karaoke.karaokebook.databinding.FragmentLibraryBinding;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Retrofit;
 
 public class LibraryFragment extends Fragment {
 
@@ -37,7 +30,7 @@ public class LibraryFragment extends Fragment {
         //folderListLayout = binding.folderListLayout;
 
         CellFolderBinding folderBinding = CellFolderBinding.inflate(getLayoutInflater(), folderListLayout, false);
-        folderListLayout.addView(folderBinding.getRoot());
+        //folderListLayout.addView(folderBinding.getRoot());
 
         return binding.getRoot();
     }

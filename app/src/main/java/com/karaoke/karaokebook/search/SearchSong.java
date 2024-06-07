@@ -3,8 +3,8 @@ package com.karaoke.karaokebook.search;
 import android.net.Uri;
 import android.util.Log;
 
-import com.karaoke.karaokebook.BookmarkDB;
-import com.karaoke.karaokebook.CellData.SongCellData;
+import com.karaoke.karaokebook.data.local.BookmarkDB;
+import com.karaoke.karaokebook.data.cell.SongCellData;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,14 +26,14 @@ public class SearchSong implements Callable<ArrayList<SongCellData>> {
         this.searchText = searchText;
     }
 
-    private static HashMap<String, String> searchTypeMap = new HashMap<String, String>() {{
+    private static final HashMap<String, String> searchTypeMap = new HashMap<String, String>() {{
         put("제목", "1");
         put("가수", "2");
         put("가사", "6");
     }
     };
 
-    private static HashMap<String, String> natTypeMap = new HashMap<String, String>() {{
+    private static final HashMap<String, String> natTypeMap = new HashMap<String, String>() {{
         put("한국", "KOR");
         put("팝송", "ENG");
         put("일본", "JPN");

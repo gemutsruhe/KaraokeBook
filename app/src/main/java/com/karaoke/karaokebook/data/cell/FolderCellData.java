@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.CellData;
+package com.karaoke.karaokebook.data.cell;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -11,6 +11,9 @@ public class FolderCellData implements CellData {
     public String getFolderName() {
         return folderName;
     }
-    public int getBookmarkCount() { return bookmarkCount; }
+
+    public int getBookmarkCount() {
+        return bookmarkCount;
+    }
 
 }

@@ -1,6 +1,7 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.data.remote;
 
-import com.karaoke.karaokebook.CellData.BookmarkCellData;
+import com.karaoke.karaokebook.data.model.User;
+import com.karaoke.karaokebook.data.cell.BookmarkCellData;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

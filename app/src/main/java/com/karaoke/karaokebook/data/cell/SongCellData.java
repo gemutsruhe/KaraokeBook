@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.CellData;
+package com.karaoke.karaokebook.data.cell;
 
 public class SongCellData implements CellData {
     private String number;
@@ -35,13 +35,15 @@ public class SongCellData implements CellData {
         return singer;
     }
 
-    public Integer getPitch() { return pitch; }
+    public Integer getPitch() {
+        return pitch;
+    }
 
     public boolean isBookmarked() {
         return bookmarked;
     }
 
     public void setBookmark(boolean bookmark) {
-        this.bookmarked = bookmarked;
+        this.bookmarked = bookmark;
     }
 }

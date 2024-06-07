@@ -1,8 +1,7 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.view;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
@@ -11,9 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.karaoke.karaokebook.bookmark.LibraryFragment;
+import com.karaoke.karaokebook.R;
+import com.karaoke.karaokebook.view.LibraryFragment;
 import com.karaoke.karaokebook.databinding.ActivityMainBinding;
-import com.karaoke.karaokebook.search.SearchFragment;
+import com.karaoke.karaokebook.view.SearchFragment;
 
 import java.util.List;
 

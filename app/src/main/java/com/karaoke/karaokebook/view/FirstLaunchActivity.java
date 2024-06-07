@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.view;
 
 import android.Manifest;
 import android.app.Activity;
@@ -6,10 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.service.autofill.UserData;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,13 +23,13 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
+import com.karaoke.karaokebook.data.remote.LibraryAPI;
+import com.karaoke.karaokebook.data.remote.NetworkClient;
+import com.karaoke.karaokebook.R;
+import com.karaoke.karaokebook.data.model.User;
 import com.karaoke.karaokebook.databinding.ActivityFirstLaunchBinding;
-import com.karaoke.karaokebook.databinding.ActivityMainBinding;
 
-import java.io.IOException;
-import java.io.Reader;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,8 +40,8 @@ public class FirstLaunchActivity extends AppCompatActivity {
     SharedPreferences sharedPref;
     String sharedPrefKey;
 
-    Retrofit retrofit = NetworkClient.getClient(getApplicationContext());
-    LibraryAPI api = retrofit.create(LibraryAPI.class);
+    Retrofit retrofit;
+    LibraryAPI api;
     private ActivityFirstLaunchBinding binding;
     ActivityResultLauncher<Intent> registerForActivityResult;
     @Override
@@ -54,12 +51,15 @@ public class FirstLaunchActivity extends AppCompatActivity {
         requestPermission();
 
         sharedPref = this.getSharedPreferences(getString(R.string.shared_pref), Context.MODE_PRIVATE);
-        /*if (sharedPref.contains(sharedPrefKey)) {
+        //if (sharedPref.contains(sharedPrefKey)) {
             goToMainActivity();
-        }*/
+        //}
 
         binding = ActivityFirstLaunchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        retrofit = NetworkClient.getClient(getApplicationContext());
+        api = retrofit.create(LibraryAPI.class);
 
         binding.useWithoutLogin.setOnClickListener(view -> new Thread(this::assignUser).start());
         binding.googleLoginBtn.setOnClickListener(view -> {

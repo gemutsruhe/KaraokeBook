@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.data.remote;
 
 import android.content.Context;
 

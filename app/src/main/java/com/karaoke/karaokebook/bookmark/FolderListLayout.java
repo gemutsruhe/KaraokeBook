@@ -4,7 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
-import com.karaoke.karaokebook.BookmarkDB;
+import com.karaoke.karaokebook.data.local.BookmarkDB;
 
 public class FolderListLayout extends LinearLayout {
     LayoutInflater inflater;

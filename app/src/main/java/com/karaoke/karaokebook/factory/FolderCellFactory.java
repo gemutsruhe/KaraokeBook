@@ -1,12 +1,12 @@
-package com.karaoke.karaokebook.CellFactory;
+package com.karaoke.karaokebook.factory;
 
 import android.content.Context;
 import android.view.ViewGroup;
 
 import androidx.viewbinding.ViewBinding;
 
-import com.karaoke.karaokebook.CellData.CellData;
-import com.karaoke.karaokebook.CellData.FolderCellData;
+import com.karaoke.karaokebook.data.cell.CellData;
+import com.karaoke.karaokebook.data.cell.FolderCellData;
 import com.karaoke.karaokebook.databinding.CellFolderBinding;
 
 public class FolderCellFactory extends CellFactory{

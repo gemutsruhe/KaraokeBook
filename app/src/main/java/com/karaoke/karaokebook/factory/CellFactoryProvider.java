@@ -1,13 +1,13 @@
-package com.karaoke.karaokebook.CellFactory;
+package com.karaoke.karaokebook.factory;
 
 import android.view.View;
 
-import com.karaoke.karaokebook.CellData.CellData;
+import com.karaoke.karaokebook.data.cell.CellData;
 
 public class CellFactoryProvider {
 
     CellFactory cellFactory;
-    CellFactoryProvider(CellFactory cellFactory) {
+    public CellFactoryProvider(CellFactory cellFactory) {
         this.cellFactory = cellFactory;
     }
 

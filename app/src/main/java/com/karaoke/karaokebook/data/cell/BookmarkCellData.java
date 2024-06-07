@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.CellData;
+package com.karaoke.karaokebook.data.cell;
 
 import com.google.gson.annotations.SerializedName;
 

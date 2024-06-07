@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.CellFactory;
+package com.karaoke.karaokebook.factory;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -9,19 +9,21 @@ import android.widget.TextView;
 
 import androidx.viewbinding.ViewBinding;
 
-import com.karaoke.karaokebook.CellData.CellData;
+import com.karaoke.karaokebook.data.cell.CellData;
 
 public abstract class CellFactory {
     protected final Context context;
     protected final LayoutInflater inflater;
     protected final ViewGroup parent;
     protected final Resources resources;
+
     CellFactory(Context context, ViewGroup parent) {
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.parent = parent;
         this.resources = context.getResources();
     }
+
     public abstract ViewBinding create(CellData info);
 
     protected void setTextView(TextView textView, String text) {

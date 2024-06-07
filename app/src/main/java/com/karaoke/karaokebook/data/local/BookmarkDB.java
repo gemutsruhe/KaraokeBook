@@ -1,7 +1,7 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.data.local;
 
 
-import static com.karaoke.karaokebook.DBConstants.*;
+import static com.karaoke.karaokebook.data.local.DBConstants.*;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,8 +10,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.karaoke.karaokebook.CellData.BookmarkCellData;
-import com.karaoke.karaokebook.CellData.SongCellData;
+import com.karaoke.karaokebook.data.cell.BookmarkCellData;
+import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.bookmark.BookmarkFolder;
 
 import java.util.ArrayList;

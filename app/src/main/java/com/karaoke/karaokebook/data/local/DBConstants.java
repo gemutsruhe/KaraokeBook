@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook;
+package com.karaoke.karaokebook.data.local;
 
 public class DBConstants {
     static final String DATABASE_NAME = "BookmarkList.db";

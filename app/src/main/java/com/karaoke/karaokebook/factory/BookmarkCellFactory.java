@@ -1,12 +1,12 @@
-package com.karaoke.karaokebook.CellFactory;
+package com.karaoke.karaokebook.factory;
 
 import android.content.Context;
 import android.view.ViewGroup;
 
 import androidx.viewbinding.ViewBinding;
 
-import com.karaoke.karaokebook.CellData.BookmarkCellData;
-import com.karaoke.karaokebook.CellData.CellData;
+import com.karaoke.karaokebook.data.cell.BookmarkCellData;
+import com.karaoke.karaokebook.data.cell.CellData;
 import com.karaoke.karaokebook.databinding.CellBookmarkedSongBinding;
 
 public class BookmarkCellFactory extends CellFactory {

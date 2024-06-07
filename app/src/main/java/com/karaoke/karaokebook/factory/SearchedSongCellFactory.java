@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.CellFactory;
+package com.karaoke.karaokebook.factory;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -7,14 +7,14 @@ import android.widget.ImageView;
 
 import androidx.viewbinding.ViewBinding;
 
-import com.karaoke.karaokebook.CellData.CellData;
+import com.karaoke.karaokebook.data.cell.CellData;
 import com.karaoke.karaokebook.R;
-import com.karaoke.karaokebook.CellData.SongCellData;
+import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.databinding.CellSearchedSongBinding;
 
 public class SearchedSongCellFactory extends CellFactory {
     //private Resources resources = Resources.getSystem();
-    SearchedSongCellFactory(Context context, ViewGroup parent) {
+    public SearchedSongCellFactory(Context context, ViewGroup parent) {
         super(context, parent);
     }
     public ViewBinding create(CellData data) {
