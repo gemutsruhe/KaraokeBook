@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 import com.karaoke.karaokebook.data.model.ListLiveData;
 import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
+import com.karaoke.karaokebook.search.SearchSong;
 
 import java.util.List;
 
@@ -19,6 +20,12 @@ public class SearchedSongViewModel extends ViewModel {
 
     public ListLiveData<SongCellData> getSongCellDataList() {
         return songCellDataList;
+    }
+
+    public void search(String searchType, String natName, String searchText) {
+        new Thread(() -> {
+            SearchSong.search(searchType, natName, searchText);
+        }).start();
     }
 
     public void addDataList(List<SongCellData> dataList) {

@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
 
 import com.karaoke.karaokebook.data.local.BookmarkDB;
 import com.karaoke.karaokebook.data.cell.SongCellData;
@@ -23,6 +24,7 @@ import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
 import com.karaoke.karaokebook.viewModel.SearchedSongViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -61,10 +63,15 @@ public class SearchFragment extends Fragment {
         setSpinnerAdapter(binding.natSpinner, natList);
 
         searchedSongRepository = SearchedSongRepository.getInstance();
+        searchedSongViewModel = new SearchedSongViewModel();
 
         searchedSongRepository.getSongCellDataList().observe(getViewLifecycleOwner(), songCellDataList -> {
             searchedSongListLayout.addSearchedSongs(songCellDataList);
             searching = false;
+        });
+
+        searchedSongRepository.getSongCellDataList().observe(getViewLifecycleOwner(), songCellData -> {
+            searchedSongListLayout.addSearchedSongs(songCellData);
         });
 
         binding.searchImageView.setOnClickListener(view -> {
@@ -75,8 +82,8 @@ public class SearchFragment extends Fragment {
                 String searchType = binding.typeSpinner.getSelectedItem().toString();
                 String natName = binding.natSpinner.getSelectedItem().toString();
                 String searchText = binding.searchStrEditText.getText().toString();
-
-                search(searchType, natName, searchText);
+                searchedSongListLayout.removeAllViews();
+                searchedSongViewModel.search(searchType, natName, searchText);
             }
         });
 
@@ -87,17 +94,6 @@ public class SearchFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, list);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-    }
-
-    private void search(String searchType, String natName, String searchText){
-        new Thread(() -> {
-            try {
-                Future<ArrayList<SongCellData>> searchResult = executorService.submit(new SearchSong(searchType, natName, searchText));
-                searchedSongRepository.getSongCellDataList().addAll(searchResult.get());
-            } catch (ExecutionException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }).start();
     }
 
     @Override

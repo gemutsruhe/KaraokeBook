@@ -8,9 +8,9 @@ import com.google.gson.annotations.SerializedName;
 public class User {
     //private static User userInstance = null;
 
-    User() {
+    public User() {
     }
-    User(int id, String email, String nickname) {
+    public User(int id, String email, String nickname) {
         this.id = id;
         this.email = email;
         this.nickname = nickname;

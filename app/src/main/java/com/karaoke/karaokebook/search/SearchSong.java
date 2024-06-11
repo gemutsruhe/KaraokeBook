@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.karaoke.karaokebook.data.local.BookmarkDB;
 import com.karaoke.karaokebook.data.cell.SongCellData;
+import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -16,15 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 
-public class SearchSong implements Callable<ArrayList<SongCellData>> {
-    private String searchType;
-    private String natType;
-    private String searchText;
-    public SearchSong(String searchType, String natType, String searchText) {
-        this.searchType = searchType;
-        this.natType = natType;
-        this.searchText = searchText;
-    }
+public class SearchSong{
 
     private static final HashMap<String, String> searchTypeMap = new HashMap<String, String>() {{
         put("제목", "1");
@@ -40,7 +33,7 @@ public class SearchSong implements Callable<ArrayList<SongCellData>> {
     }
     };
 
-    private String buildURL() {
+    private static String buildURL(String searchType, String natType, String searchText) {
         URI uri = URI.create("https://www.tjmedia.com/tjsong/song_search_list.asp");
         Uri.Builder builder = new Uri.Builder()
                 .scheme("https")
@@ -55,15 +48,17 @@ public class SearchSong implements Callable<ArrayList<SongCellData>> {
         return builder.toString();
     }
 
-    @Override
-    public ArrayList<SongCellData> call() throws Exception {
-        String url = buildURL();
+    public static void search(String searchType, String natType, String searchText) {
+        String url = buildURL(searchType, natType, searchText);
 
         BookmarkDB bookmarkDB = BookmarkDB.getInstance();
-        ArrayList<SongCellData> songCellDataList = new ArrayList<>();
+
+        SearchedSongRepository searchedSongRepository = SearchedSongRepository.getInstance();
 
         int pageNum = 1;
         while(true) {
+            ArrayList<SongCellData> songCellDataList = new ArrayList<>();
+
             String pageUrl = url + pageNum;
             Log.e("TEST", pageUrl);
             try {
@@ -72,11 +67,8 @@ public class SearchSong implements Callable<ArrayList<SongCellData>> {
                 Elements elements = doc.select("div#BoardType1 table.board_type1 tbody tr td");
 
                 int songNum = elements.size() / 6;
-                Log.e("TEST", String.valueOf(songNum));
-                if(songNum == 0) {
 
-                    break;
-                }
+                if(songNum == 0) break;
 
                 for(int i = 0; i < songNum; i++) {
                     int firstIdx = i * 6;
@@ -86,14 +78,15 @@ public class SearchSong implements Callable<ArrayList<SongCellData>> {
                     //Boolean is_bookmarked = bookmarkDB.getBookmark(number);
                     SongCellData songCellData = new SongCellData(number, title, singer, false);
                     songCellDataList.add(songCellData);
-                    Log.e("TEST", title);
                 }
+                searchedSongRepository.addDataList(songCellDataList);
+                pageNum++;
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            pageNum++;
         }
 
-        return songCellDataList;
+        //return songCellDataList;
     }
 }

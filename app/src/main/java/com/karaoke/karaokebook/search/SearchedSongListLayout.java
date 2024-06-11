@@ -6,8 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.lifecycle.Observer;
+
 import com.karaoke.karaokebook.data.local.BookmarkDB;
 import com.karaoke.karaokebook.data.cell.SongCellData;
+import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
 import com.karaoke.karaokebook.factory.CellFactoryProvider;
 import com.karaoke.karaokebook.factory.SearchedSongCellFactory;
 import com.karaoke.karaokebook.data.remote.LibraryAPI;
@@ -36,13 +39,17 @@ public class SearchedSongListLayout extends LinearLayout {
         sharedPref = context.getSharedPreferences("userInfo", Context.MODE_PRIVATE);
 
         cellFactoryProvider = new CellFactoryProvider(new SearchedSongCellFactory(context, this));
+
+        SearchedSongRepository searchedSongRepository = SearchedSongRepository.getInstance();
+
+
     }
 
     public void addSearchedSongs(List<SongCellData> searchedSongCellDataList) {
-        this.removeAllViews();
+        //this.removeAllViews();
 
-        if(searchedSongCellDataList != null) {
-            for(int i = 0; i < searchedSongCellDataList.size(); i++) {
+        if (searchedSongCellDataList != null) {
+            for (int i = this.getChildCount(); i < searchedSongCellDataList.size(); i++) {
                 View searchedSongCell = cellFactoryProvider.createCell(searchedSongCellDataList.get(i));
                 this.addView(searchedSongCell, i);
             }
