@@ -36,6 +36,7 @@ public class SearchedSongViewModel extends ViewModel {
         }).start();
     }
 
-    public void addDataList(List<SongCellData> dataList) {
+    public void stopSearch() {
+        searchState.postValue(false);
     }
 }

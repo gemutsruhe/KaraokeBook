@@ -71,19 +71,30 @@ public class SearchFragment extends Fragment {
 
         searchedSongViewModel.getSearchState().observe(getViewLifecycleOwner(), searchState -> {
             this.searchState = searchState;
+
+            if(searchState) {
+                searchedSongRepository.getSongCellDataList().clear(false);
+                searchedSongListLayout.removeAllViews();
+                binding.progressBar.setVisibility(View.VISIBLE);
+                binding.searchImageView.setVisibility(View.GONE);
+            } else {
+                binding.progressBar.setVisibility(View.GONE);
+                binding.searchImageView.setVisibility(View.VISIBLE);
+            }
         });
 
         binding.searchImageView.setOnClickListener(view -> {
             if (!searchState) {
-                searchedSongRepository.getSongCellDataList().clear(false);
-
                 String searchType = binding.typeSpinner.getSelectedItem().toString();
                 String natName = binding.natSpinner.getSelectedItem().toString();
                 String searchText = binding.searchStrEditText.getText().toString();
 
-                searchedSongListLayout.removeAllViews();
                 searchedSongViewModel.search(searchType, natName, searchText);
             }
+        });
+
+        binding.progressBar.setOnClickListener(view -> {
+            searchedSongViewModel.stopSearch();
         });
 
         return binding.getRoot();
@@ -94,6 +105,8 @@ public class SearchFragment extends Fragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
     }
+
+
 
     @Override
     public void onPause() {

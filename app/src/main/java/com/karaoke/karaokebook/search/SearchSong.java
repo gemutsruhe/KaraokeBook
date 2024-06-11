@@ -56,7 +56,7 @@ public class SearchSong{
         SearchedSongRepository searchedSongRepository = SearchedSongRepository.getInstance();
 
         int pageNum = 1;
-        while(true) {
+        while(Boolean.TRUE.equals(searchedSongRepository.getSearchState().getValue())) {
             ArrayList<SongCellData> songCellDataList = new ArrayList<>();
 
             String pageUrl = url + pageNum;
@@ -88,6 +88,5 @@ public class SearchSong{
         }
 
         SearchedSongRepository.getInstance().getSearchState().postValue(false);
-        //return songCellDataList;
     }
 }
