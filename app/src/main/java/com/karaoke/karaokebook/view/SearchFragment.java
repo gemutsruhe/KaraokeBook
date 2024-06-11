@@ -35,19 +35,15 @@ public class SearchFragment extends Fragment {
     //LayoutInflater inflater = null;
     FragmentSearchBinding binding;
 
-    ImageView searchImage;
-    EditText searchStrEditText;
     SearchedSongListLayout searchedSongListLayout;
 
     SearchedSongRepository searchedSongRepository;
     SearchedSongViewModel searchedSongViewModel;
     String[] natList = {"한국", "팝송", "일본"};
     String[] typeList = {"제목", "가수", "가사"};
-
-    LiveData<ArrayList<SongCellData>> searchedSongs;
     BookmarkDB bookmarkDB;
     ExecutorService executorService;
-    boolean searching = false;
+    Boolean searchState;
     View v;
     @Nullable
     @Override
@@ -65,23 +61,26 @@ public class SearchFragment extends Fragment {
         searchedSongRepository = SearchedSongRepository.getInstance();
         searchedSongViewModel = new SearchedSongViewModel();
 
-        searchedSongRepository.getSongCellDataList().observe(getViewLifecycleOwner(), songCellDataList -> {
+        searchedSongViewModel.getSongCellDataList().observe(getViewLifecycleOwner(), songCellDataList -> {
             searchedSongListLayout.addSearchedSongs(songCellDataList);
-            searching = false;
         });
 
-        searchedSongRepository.getSongCellDataList().observe(getViewLifecycleOwner(), songCellData -> {
+        searchedSongViewModel.getSongCellDataList().observe(getViewLifecycleOwner(), songCellData -> {
             searchedSongListLayout.addSearchedSongs(songCellData);
         });
 
+        searchedSongViewModel.getSearchState().observe(getViewLifecycleOwner(), searchState -> {
+            this.searchState = searchState;
+        });
+
         binding.searchImageView.setOnClickListener(view -> {
-            if(!searching) {
+            if (!searchState) {
                 searchedSongRepository.getSongCellDataList().clear(false);
-                searching = true;
 
                 String searchType = binding.typeSpinner.getSelectedItem().toString();
                 String natName = binding.natSpinner.getSelectedItem().toString();
                 String searchText = binding.searchStrEditText.getText().toString();
+
                 searchedSongListLayout.removeAllViews();
                 searchedSongViewModel.search(searchType, natName, searchText);
             }

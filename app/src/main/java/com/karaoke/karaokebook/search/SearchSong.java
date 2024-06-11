@@ -87,6 +87,7 @@ public class SearchSong{
             }
         }
 
+        SearchedSongRepository.getInstance().getSearchState().postValue(false);
         //return songCellDataList;
     }
 }

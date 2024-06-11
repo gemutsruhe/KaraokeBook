@@ -1,5 +1,7 @@
 package com.karaoke.karaokebook.data.repository;
 
+import androidx.lifecycle.MutableLiveData;
+
 import com.karaoke.karaokebook.data.model.ListLiveData;
 import com.karaoke.karaokebook.data.cell.SongCellData;
 
@@ -8,9 +10,11 @@ import java.util.List;
 public class SearchedSongRepository {
     private static SearchedSongRepository instance;
     private ListLiveData<SongCellData> liveData;
+    private MutableLiveData<Boolean> searchState;
 
     private SearchedSongRepository() {
         liveData = new ListLiveData<>();
+        searchState = new MutableLiveData<>(false);
     }
 
     public static SearchedSongRepository getInstance() {
@@ -23,6 +27,9 @@ public class SearchedSongRepository {
 
     public ListLiveData<SongCellData> getSongCellDataList() {
         return liveData;
+    }
+    public MutableLiveData<Boolean> getSearchState() {
+        return searchState;
     }
 
     public void addData(SongCellData songCellData) {
