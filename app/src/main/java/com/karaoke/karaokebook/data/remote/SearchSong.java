@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.search;
+package com.karaoke.karaokebook.data.remote;
 
 import android.net.Uri;
 import android.util.Log;

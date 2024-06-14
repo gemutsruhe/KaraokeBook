@@ -15,18 +15,6 @@ public class User {
         this.email = email;
         this.nickname = nickname;
     }
-    /*public static User getInstance(String email, String nickname) {
-        if(userInstance == null) {
-            userInstance = new User(email, nickname);
-        }
-        return userInstance;
-    }
-    public static User getInstance() {
-        if(userInstance == null) {
-            userInstance = new User();
-        }
-        return userInstance;
-    }*/
 
     @SerializedName("id")
     @Expose

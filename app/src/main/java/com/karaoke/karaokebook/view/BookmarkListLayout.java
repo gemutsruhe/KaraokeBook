@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.bookmark;
+package com.karaoke.karaokebook.view;
 
 import android.content.Context;
 import android.widget.LinearLayout;

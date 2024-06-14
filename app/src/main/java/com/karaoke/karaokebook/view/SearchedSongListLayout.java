@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.search;
+package com.karaoke.karaokebook.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;

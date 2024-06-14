@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel;
 import com.karaoke.karaokebook.data.model.ListLiveData;
 import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
-import com.karaoke.karaokebook.search.SearchSong;
-
-import java.util.List;
+import com.karaoke.karaokebook.data.remote.SearchSong;
 
 public class SearchedSongViewModel extends ViewModel {
     private SearchedSongRepository searchedSongRepository;

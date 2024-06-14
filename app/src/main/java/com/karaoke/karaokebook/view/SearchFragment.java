@@ -6,29 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 import com.karaoke.karaokebook.data.local.BookmarkDB;
-import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.databinding.FragmentSearchBinding;
-import com.karaoke.karaokebook.search.SearchSong;
-import com.karaoke.karaokebook.search.SearchedSongListLayout;
 import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
 import com.karaoke.karaokebook.viewModel.SearchedSongViewModel;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class SearchFragment extends Fragment {
 
