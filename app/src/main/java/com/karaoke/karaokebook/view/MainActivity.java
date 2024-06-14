@@ -1,5 +1,7 @@
 package com.karaoke.karaokebook.view;
 
+import static com.karaoke.karaokebook.data.remote.GetPopularSong.get;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -11,6 +13,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.karaoke.karaokebook.R;
+import com.karaoke.karaokebook.data.cell.SongCellData;
+import com.karaoke.karaokebook.data.remote.GetPopularSong;
 import com.karaoke.karaokebook.view.LibraryFragment;
 import com.karaoke.karaokebook.databinding.ActivityMainBinding;
 import com.karaoke.karaokebook.view.SearchFragment;
@@ -19,9 +23,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     SearchFragment searchFragment;
+    PopularFragment popularFragment;
     LibraryFragment libraryFragment;
-    Button searchFragmentButton;
-    Button libraryFragmentButton;
+
     ActivityMainBinding binding;
     FragmentManager fragmentManager;
     FragmentTransaction ft;
@@ -34,12 +38,10 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        searchFragmentButton = binding.btnSearchFragment;
-        libraryFragmentButton = binding.btnLibraryFragment;
-
         fragmentManager = getSupportFragmentManager();
 
         searchFragment = new SearchFragment();
+        popularFragment =  new PopularFragment();
         libraryFragment = new LibraryFragment();
 
         addFragments();
@@ -47,13 +49,21 @@ public class MainActivity extends AppCompatActivity {
         ft.hide(libraryFragment);
         //showFragment(searchFragment);
 
-        searchFragmentButton.setOnClickListener(view -> {
+        binding.searchFragmentBtn.setOnClickListener(view -> {
             showFragment(searchFragment);
         });
 
-        libraryFragmentButton.setOnClickListener(view -> {
+        binding.popularFragmentBtn.setOnClickListener(view -> {
+            showFragment(popularFragment);
+        });
+
+        binding.libraryFragmentBtn.setOnClickListener(view -> {
             showFragment(libraryFragment);
         });
+
+        new Thread(() -> {
+            List<SongCellData> dataList = GetPopularSong.get(1);
+        }).start();
 
 
     }

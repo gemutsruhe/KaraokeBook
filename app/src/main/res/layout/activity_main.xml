@@ -27,7 +27,7 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <Button
-            android:id="@+id/btn_search_fragment"
+            android:id="@+id/searchFragmentBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -38,7 +38,18 @@
             android:text="검색" />
 
         <Button
-            android:id="@+id/btn_library_fragment"
+            android:id="@+id/popularFragmentBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#00FFFFFF"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            android:onClick="clickHandler"
+            android:text="인기차트" />
+
+        <Button
+            android:id="@+id/libraryFragmentBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
