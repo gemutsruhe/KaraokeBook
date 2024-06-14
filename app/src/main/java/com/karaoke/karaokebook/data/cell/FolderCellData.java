@@ -8,6 +8,10 @@ public class FolderCellData implements CellData {
     @SerializedName("bookmark_count")
     private int bookmarkCount;
 
+    public FolderCellData(String folderName, int bookmarkCount) {
+        this.folderName = folderName;
+        this.bookmarkCount = bookmarkCount;
+    }
     public String getFolderName() {
         return folderName;
     }

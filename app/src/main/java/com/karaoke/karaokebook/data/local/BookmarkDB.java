@@ -12,7 +12,7 @@ import android.util.Log;
 
 import com.karaoke.karaokebook.data.cell.BookmarkCellData;
 import com.karaoke.karaokebook.data.cell.SongCellData;
-import com.karaoke.karaokebook.bookmark.BookmarkFolder;
+import com.karaoke.karaokebook.data.model.BookmarkFolder;
 
 import java.util.ArrayList;
 
