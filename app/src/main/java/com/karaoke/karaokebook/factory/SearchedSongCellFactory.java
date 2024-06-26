@@ -2,6 +2,7 @@ package com.karaoke.karaokebook.factory;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -23,10 +24,10 @@ public class SearchedSongCellFactory extends CellFactory {
         CellSearchedSongBinding binding = CellSearchedSongBinding.inflate(inflater, parent, false);
 
         setTextView(binding.songNumTextView, songCellData.getNumber());
-        setTextView(binding.songTitleTextView, songCellData.getTitle());
-        setTextView(binding.songSingerTextView, songCellData.getSinger());
+        setScrollTextView(binding.songTitleTextView, songCellData.getTitle());
+        setScrollTextView(binding.songSingerTextView, songCellData.getSinger());
         setBookmark(binding.bookmarkImageView, songCellData, songCellData.isBookmarked());
-
+        //Log.e("TEST", String.valueOf(binding.songNumTextView.getText()));
         return binding;
     }
 

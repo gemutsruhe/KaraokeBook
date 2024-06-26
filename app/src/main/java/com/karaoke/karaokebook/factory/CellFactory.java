@@ -28,6 +28,10 @@ public abstract class CellFactory {
 
     protected void setTextView(TextView textView, String text) {
         textView.setText(text);
+    }
+
+    protected void setScrollTextView(TextView textView, String text) {
+        textView.setText(text);
         textView.setHorizontallyScrolling(true);
         textView.setMovementMethod(new ScrollingMovementMethod());
     }

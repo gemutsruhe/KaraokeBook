@@ -45,9 +45,10 @@ public class MainActivity extends AppCompatActivity {
         libraryFragment = new LibraryFragment();
 
         addFragments();
+
         ft.show(searchFragment);
+        ft.hide(popularFragment);
         ft.hide(libraryFragment);
-        //showFragment(searchFragment);
 
         binding.searchFragmentBtn.setOnClickListener(view -> {
             showFragment(searchFragment);
@@ -60,18 +61,13 @@ public class MainActivity extends AppCompatActivity {
         binding.libraryFragmentBtn.setOnClickListener(view -> {
             showFragment(libraryFragment);
         });
-
-        new Thread(() -> {
-            List<SongCellData> dataList = GetPopularSong.get(1);
-        }).start();
-
-
     }
 
     private void addFragments() {
         ft = fragmentManager.beginTransaction();
 
         ft.add(R.id.fragmentFrame, searchFragment);
+        ft.add(R.id.fragmentFrame, popularFragment);
         ft.add(R.id.fragmentFrame, libraryFragment);
 
         ft.commit();
@@ -82,10 +78,8 @@ public class MainActivity extends AppCompatActivity {
         List<Fragment> fragmentList = fragmentManager.getFragments();
         for(Fragment fragment : fragmentList) {
             if(fragment.equals(target)) {
-                Log.e("TEST", "show");
                 ft.show(fragment);
             } else {
-                Log.e("TEST", "hide");
                 ft.hide(fragment);
             }
         }

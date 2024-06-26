@@ -1,10 +1,9 @@
 package com.karaoke.karaokebook.data.remote;
 
 import android.net.Uri;
-import android.util.Log;
 
-import com.karaoke.karaokebook.data.local.BookmarkDB;
 import com.karaoke.karaokebook.data.cell.SongCellData;
+import com.karaoke.karaokebook.data.local.BookmarkDB;
 import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
 
 import org.jsoup.Jsoup;
@@ -15,7 +14,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.Callable;
 
 public class SearchSong{
 
@@ -60,7 +58,7 @@ public class SearchSong{
             ArrayList<SongCellData> songCellDataList = new ArrayList<>();
 
             String pageUrl = url + pageNum;
-            Log.e("TEST", pageUrl);
+
             try {
                 Document doc = Jsoup.connect(pageUrl).get();
 

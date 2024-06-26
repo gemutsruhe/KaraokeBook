@@ -1,10 +1,10 @@
 package com.karaoke.karaokebook.data.cell;
 
 public class SongCellData implements CellData {
-    private String number;
-    private String title;
-    private String singer;
-    private Integer pitch;
+    private final String number;
+    private final String title;
+    private final String singer;
+    private final Integer pitch;
     private boolean bookmarked;
 
     public SongCellData(String number, String title, String singer, boolean bookmarked) {
