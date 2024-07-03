@@ -12,7 +12,7 @@ import android.util.Log;
 
 import com.karaoke.karaokebook.data.cell.BookmarkCellData;
 import com.karaoke.karaokebook.data.cell.SongCellData;
-import com.karaoke.karaokebook.data.model.BookmarkFolder;
+import com.karaoke.karaokebook.data.model.Folder;
 
 import java.util.ArrayList;
 
@@ -125,7 +125,7 @@ public class BookmarkDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void addBookmarkToFolder(BookmarkCellData bookmarkCellData, BookmarkFolder bookmarkFolder) {
+    public void addBookmarkToFolder(BookmarkCellData bookmarkCellData, Folder folder) {
         int songNumber = bookmarkCellData.getSongNumber();
         String songName = bookmarkCellData.getSongName();
         int pitch = bookmarkCellData.getPitch();

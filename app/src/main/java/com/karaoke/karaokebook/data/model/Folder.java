@@ -5,15 +5,13 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class Bookmark {
+public class Folder {
     @PrimaryKey
     public int id;
-
-    @ColumnInfo(name = "number")
-    public String number;
     @ColumnInfo(name = "name")
     public String name;
-    @ColumnInfo(name = "singer")
-    public String singer;
-
+    @ColumnInfo(name = "bookmarkNum")
+    public int bookmarkNum;
+    @ColumnInfo(name = "parent")
+    public int parent;
 }
