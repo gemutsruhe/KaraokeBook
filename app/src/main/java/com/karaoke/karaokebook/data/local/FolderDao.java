@@ -1,8 +1,10 @@
 package com.karaoke.karaokebook.data.local;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.karaoke.karaokebook.data.model.Folder;
 
@@ -12,6 +14,12 @@ import java.util.List;
 public interface FolderDao {
     @Insert
     void insert(Folder folder);
+
+    @Update
+    void update(Folder folder);
+
+    @Delete
+    void delete(Folder folder);
 
     @Query("SELECT * FROM folder")
     List<Folder> getAll();

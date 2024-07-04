@@ -6,12 +6,10 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class Folder {
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
-    @ColumnInfo(name = "name")
+
     public String name;
-    @ColumnInfo(name = "bookmarkNum")
-    public int bookmarkNum;
-    @ColumnInfo(name = "parent")
+    @ColumnInfo(defaultValue = "0")
     public int parent;
 }

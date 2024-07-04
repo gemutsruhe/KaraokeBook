@@ -9,11 +9,10 @@ public class Bookmark {
     @PrimaryKey
     public int id;
 
-    @ColumnInfo(name = "number")
     public String number;
-    @ColumnInfo(name = "name")
     public String name;
-    @ColumnInfo(name = "singer")
     public String singer;
 
+    @ColumnInfo(defaultValue = "0")
+    public int parent;
 }

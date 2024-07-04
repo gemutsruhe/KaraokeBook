@@ -13,17 +13,24 @@
 
         <Button
             android:id="@+id/showFoldersButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="북마크 목록" />
 
         <Button
             android:id="@+id/showBookmarksButton"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="폴더" />
+
+        <Button
+            android:id="@+id/addFolderButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Add Folder" />
     </LinearLayout>
 
     <ScrollView

@@ -2,6 +2,7 @@ package com.karaoke.karaokebook.viewModel;
 
 import android.content.Context;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.karaoke.karaokebook.data.cell.CellData;
@@ -16,9 +17,10 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class LibraryViewModel extends ViewModel {
-    private AppDatabase appDatabase;
+    private final AppDatabase appDatabase;
     ListLiveData<FolderCellData> folderList;
     ListLiveData<CellData> crtItemList;
+    MutableLiveData<Integer> crtFolder;
     private final Executor executor = Executors.newSingleThreadExecutor();
     public LibraryViewModel(Context context) {
         LibraryRepository libraryRepository = LibraryRepository.getInstance();
@@ -26,7 +28,6 @@ public class LibraryViewModel extends ViewModel {
         crtItemList = libraryRepository.getCrtItemList();
 
         appDatabase = AppDatabase.getInstance(context);
-
     }
 
     private void loadFolders() {
@@ -36,8 +37,13 @@ public class LibraryViewModel extends ViewModel {
         });
     }
 
-    public void addFolder(String folderName) {
-        FolderCellData data = new FolderCellData(folderName, 0);
-        folderList.add(data);
+    public void addFolder(String folderName, int parent) {
+        executor.execute(() -> {
+            Folder newFolder = new Folder();
+            newFolder.name = folderName;
+            newFolder.parent = parent;
+
+            appDatabase.folderDao().insert(newFolder);
+        });
     }
 }
