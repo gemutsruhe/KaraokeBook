@@ -21,6 +21,7 @@ public class PopularFragment extends Fragment {
     FragmentPopularBinding binding;
     ArrayList<Button> typeButtonList = new ArrayList<>();
     List<PopularSongListLayout> popularLayoutList = new ArrayList<>();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,19 +35,19 @@ public class PopularFragment extends Fragment {
         typeButtonList.add(binding.popPopularBtn);
         typeButtonList.add(binding.japanPopularBtn);
 
-        for(int i = 0; i < typeButtonList.size(); i++) {
+        for (int i = 0; i < typeButtonList.size(); i++) {
             int type = i;
             typeButtonList.get(type).setOnClickListener(view -> changeType(type));
         }
 
         popularChartViewModel.getPopularList();
 
-        for(int i = 0; i <= 2; i++) {
+        for (int i = 0; i <= 2; i++) {
             int type = i;
 
             popularChartRepository.getPopularList(type).observe(getViewLifecycleOwner(), cellDataList -> {
                 popularLayoutList.get(type).addPopularList(cellDataList);
-                if(type == 0) {
+                if (type == 0) {
                     changeType(0);
                 }
             });
@@ -56,7 +57,7 @@ public class PopularFragment extends Fragment {
     }
 
     private void initPopularList() {
-        for(int type = 0; type <= 2; type++) {
+        for (int type = 0; type <= 2; type++) {
             popularLayoutList.add(new PopularSongListLayout(getContext()));
         }
     }

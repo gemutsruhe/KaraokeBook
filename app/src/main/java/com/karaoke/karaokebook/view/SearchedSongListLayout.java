@@ -6,15 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.lifecycle.Observer;
-
-import com.karaoke.karaokebook.data.local.BookmarkDB;
+import com.karaoke.karaokebook.R;
 import com.karaoke.karaokebook.data.cell.SongCellData;
+import com.karaoke.karaokebook.data.local.BookmarkDB;
+import com.karaoke.karaokebook.data.remote.LibraryAPI;
 import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
 import com.karaoke.karaokebook.factory.CellFactoryProvider;
 import com.karaoke.karaokebook.factory.SearchedSongCellFactory;
-import com.karaoke.karaokebook.data.remote.LibraryAPI;
-import com.karaoke.karaokebook.R;
 
 import java.util.List;
 
@@ -30,6 +28,7 @@ public class SearchedSongListLayout extends LinearLayout {
     LibraryAPI api;
     SharedPreferences sharedPref;
     CellFactoryProvider cellFactoryProvider;
+
     public SearchedSongListLayout(Context context) {
         super(context);
         this.setOrientation(LinearLayout.VERTICAL);

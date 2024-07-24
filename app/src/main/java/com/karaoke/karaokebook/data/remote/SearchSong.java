@@ -3,7 +3,6 @@ package com.karaoke.karaokebook.data.remote;
 import android.net.Uri;
 
 import com.karaoke.karaokebook.data.cell.SongCellData;
-import com.karaoke.karaokebook.data.local.BookmarkDB;
 import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
 
 import org.jsoup.Jsoup;
@@ -15,20 +14,22 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SearchSong{
+public class SearchSong {
 
-    private static final HashMap<String, String> searchTypeMap = new HashMap<String, String>() {{
-        put("제목", "1");
-        put("가수", "2");
-        put("가사", "6");
-    }
+    private static final HashMap<String, String> searchTypeMap = new HashMap<String, String>() {
+        {
+            put("제목", "1");
+            put("가수", "2");
+            put("가사", "6");
+        }
     };
 
-    private static final HashMap<String, String> natTypeMap = new HashMap<String, String>() {{
-        put("한국", "KOR");
-        put("팝송", "ENG");
-        put("일본", "JPN");
-    }
+    private static final HashMap<String, String> natTypeMap = new HashMap<String, String>() {
+        {
+            put("한국", "KOR");
+            put("팝송", "ENG");
+            put("일본", "JPN");
+        }
     };
 
     private static String buildURL(String searchType, String natType, String searchText) {
@@ -38,7 +39,7 @@ public class SearchSong{
                 .authority("www.tjmedia.com")
                 .appendPath("tjsong")
                 .appendPath("song_search_list.asp")
-                .appendQueryParameter("strType",searchTypeMap.get(searchType))
+                .appendQueryParameter("strType", searchTypeMap.get(searchType))
                 .appendQueryParameter("natType", natTypeMap.get(natType))
                 .appendQueryParameter("strText", searchText)
                 .appendQueryParameter("intPage", "");
@@ -49,12 +50,10 @@ public class SearchSong{
     public static void search(String searchType, String natType, String searchText) {
         String url = buildURL(searchType, natType, searchText);
 
-        BookmarkDB bookmarkDB = BookmarkDB.getInstance();
-
         SearchedSongRepository searchedSongRepository = SearchedSongRepository.getInstance();
 
         int pageNum = 1;
-        while(Boolean.TRUE.equals(searchedSongRepository.getSearchState().getValue())) {
+        while (Boolean.TRUE.equals(searchedSongRepository.getSearchState().getValue())) {
             ArrayList<SongCellData> songCellDataList = new ArrayList<>();
 
             String pageUrl = url + pageNum;
@@ -66,9 +65,9 @@ public class SearchSong{
 
                 int songNum = elements.size() / 6;
 
-                if(songNum == 0) break;
+                if (songNum == 0) break;
 
-                for(int i = 0; i < songNum; i++) {
+                for (int i = 0; i < songNum; i++) {
                     int firstIdx = i * 6;
                     String number = elements.get(firstIdx).text();
                     String title = elements.get(firstIdx + 1).text();

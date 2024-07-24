@@ -1,7 +1,10 @@
 package com.karaoke.karaokebook.data.local;
 
-
-import static com.karaoke.karaokebook.data.local.DBConstants.*;
+import static com.karaoke.karaokebook.data.local.DBConstants.COL_NAME;
+import static com.karaoke.karaokebook.data.local.DBConstants.COL_NUMBER;
+import static com.karaoke.karaokebook.data.local.DBConstants.COL_PITCH;
+import static com.karaoke.karaokebook.data.local.DBConstants.COL_SINGER;
+import static com.karaoke.karaokebook.data.local.DBConstants.TABLE_NAME;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 public class BookmarkDB extends SQLiteOpenHelper {
 
     private static BookmarkDB dbInstance = null;
+
     private BookmarkDB(Context context, int version) {
         super(context, DBConstants.DATABASE_NAME, null, version);
     }
@@ -31,7 +35,6 @@ public class BookmarkDB extends SQLiteOpenHelper {
     public static BookmarkDB getInstance() {
         return dbInstance;
     }
-
 
 
     @Override
@@ -63,10 +66,10 @@ public class BookmarkDB extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM Bookmark", null);
-        if(cursor != null && cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
             do {
                 int columnNum = cursor.getColumnCount();
-                for(int i = 0; i < columnNum; i++) {
+                for (int i = 0; i < columnNum; i++) {
 
                     Log.e("TEST", cursor.getColumnName(i) + " " + cursor.getString(i) + " ");
                 }
@@ -81,10 +84,10 @@ public class BookmarkDB extends SQLiteOpenHelper {
 
         ArrayList<Boolean> is_bookmarked = new ArrayList<>();
 
-        for(SongCellData songCellData : songCellDataList) {
+        for (SongCellData songCellData : songCellDataList) {
             String number = songCellData.getNumber();
             Cursor cursor = db.rawQuery("SELECT * FROM Bookmark WHERE number = " + number, null);
-            if(cursor.getCount() != 0) {
+            if (cursor.getCount() != 0) {
                 is_bookmarked.add(true);
             } else {
                 is_bookmarked.add(false);
@@ -115,8 +118,8 @@ public class BookmarkDB extends SQLiteOpenHelper {
         db.close();
     }
 
-    
-    public void createFolder(String folderName){
+
+    public void createFolder(String folderName) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         //db.execSQL("CREATE TABLE Folder(name TEXT, number INTEGER)");
@@ -137,8 +140,8 @@ public class BookmarkDB extends SQLiteOpenHelper {
     public void getDirectories() {
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery("SELECT folder_nam, bookmarks_num FROM Folder", null);
-        if(cursor != null) {
-            do{
+        if (cursor != null) {
+            do {
                 cursor.getString(0);
                 cursor.getInt(1);
             } while (cursor.moveToNext());

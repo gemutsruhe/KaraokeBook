@@ -1,7 +1,7 @@
 package com.karaoke.karaokebook.data.remote;
 
-import com.karaoke.karaokebook.data.model.User;
 import com.karaoke.karaokebook.data.cell.BookmarkCellData;
+import com.karaoke.karaokebook.data.model.User;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -13,8 +13,10 @@ import retrofit2.http.Query;
 public interface LibraryAPI {
     @GET("users/{id}")
     Call<User> user(@Path("id") int id);
+
     @GET("users")
     Call<User> findAssignedEmail(@Query("email") String email);
+
     @POST("users")
     Call<User> assignUser(@Body User user);
 

@@ -27,7 +27,7 @@ public class ListLiveData<T> extends LiveData<List<T>> {
 
     public void clear(Boolean notify) {
         dataList.clear();
-        if(notify) updateValue();
+        if (notify) updateValue();
     }
 
     public void sort(Comparator<T> method) {
@@ -36,7 +36,7 @@ public class ListLiveData<T> extends LiveData<List<T>> {
     }
 
     private void updateValue() {
-        if(Looper.myLooper() == Looper.getMainLooper()) {
+        if (Looper.myLooper() == Looper.getMainLooper()) {
             setValue(dataList);
         } else {
             postValue(dataList);

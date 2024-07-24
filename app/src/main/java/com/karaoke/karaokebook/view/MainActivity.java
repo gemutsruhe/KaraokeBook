@@ -1,10 +1,6 @@
 package com.karaoke.karaokebook.view;
 
-import static com.karaoke.karaokebook.data.remote.GetPopularSong.get;
-
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,11 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.karaoke.karaokebook.R;
-import com.karaoke.karaokebook.data.cell.SongCellData;
-import com.karaoke.karaokebook.data.remote.GetPopularSong;
-import com.karaoke.karaokebook.view.LibraryFragment;
 import com.karaoke.karaokebook.databinding.ActivityMainBinding;
-import com.karaoke.karaokebook.view.SearchFragment;
 
 import java.util.List;
 
@@ -31,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentTransaction ft;
 
     Fragment crtFragment = null;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
 
         searchFragment = new SearchFragment();
-        popularFragment =  new PopularFragment();
+        popularFragment = new PopularFragment();
         libraryFragment = new LibraryFragment();
 
         addFragments();
@@ -72,12 +65,13 @@ public class MainActivity extends AppCompatActivity {
 
         ft.commit();
     }
+
     private void showFragment(Fragment target) {
         ft = fragmentManager.beginTransaction();
 
         List<Fragment> fragmentList = fragmentManager.getFragments();
-        for(Fragment fragment : fragmentList) {
-            if(fragment.equals(target)) {
+        for (Fragment fragment : fragmentList) {
+            if (fragment.equals(target)) {
                 ft.show(fragment);
             } else {
                 ft.hide(fragment);

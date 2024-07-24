@@ -23,10 +23,10 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
-import com.karaoke.karaokebook.data.remote.LibraryAPI;
-import com.karaoke.karaokebook.data.remote.NetworkClient;
 import com.karaoke.karaokebook.R;
 import com.karaoke.karaokebook.data.model.User;
+import com.karaoke.karaokebook.data.remote.LibraryAPI;
+import com.karaoke.karaokebook.data.remote.NetworkClient;
 import com.karaoke.karaokebook.databinding.ActivityFirstLaunchBinding;
 
 import java.util.List;
@@ -44,6 +44,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
     LibraryAPI api;
     private ActivityFirstLaunchBinding binding;
     ActivityResultLauncher<Intent> registerForActivityResult;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +53,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
 
         sharedPref = this.getSharedPreferences(getString(R.string.shared_pref), Context.MODE_PRIVATE);
         //if (sharedPref.contains(sharedPrefKey)) {
-            goToMainActivity();
+        goToMainActivity();
         //}
 
         binding = ActivityFirstLaunchBinding.inflate(getLayoutInflater());
@@ -76,12 +77,12 @@ public class FirstLaunchActivity extends AppCompatActivity {
         });
 
         GoogleSignInAccount gsa = GoogleSignIn.getLastSignedInAccount(FirstLaunchActivity.this);
-        if(gsa != null) {
+        if (gsa != null) {
 
         }
 
         registerForActivityResult = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-            if(result.getResultCode() == Activity.RESULT_OK) {
+            if (result.getResultCode() == Activity.RESULT_OK) {
                 new Thread(() -> {
 
                     String email = getLoginEmail(result);
@@ -92,7 +93,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
                         public void onResponse(Call<User> call, Response<User> response) {
                             User user = response.body();
                             int id = user.getId();
-                            if(id == -1) {
+                            if (id == -1) {
 
                             }
                         }

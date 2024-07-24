@@ -1,7 +1,6 @@
 package com.karaoke.karaokebook.data.remote;
 
 import android.net.Uri;
-import android.provider.DocumentsContract;
 import android.util.Log;
 
 import com.karaoke.karaokebook.data.cell.SongCellData;
@@ -11,14 +10,10 @@ import com.karaoke.karaokebook.data.repository.PopularChartRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
-import org.jsoup.select.Evaluator;
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class GetPopularSong {
@@ -40,7 +35,7 @@ public class GetPopularSong {
             ListLiveData<SongCellData> data = PopularChartRepository.getInstance().getPopularList(type);
 
             ArrayList<SongCellData> popularSongList = new ArrayList<>();
-            while(true) {
+            while (true) {
                 try {
                     Document doc = Jsoup.connect(url).get();
                     Elements elements = doc.select("div#BoardType1 table.board_type1 tbody tr");

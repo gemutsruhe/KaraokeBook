@@ -1,23 +1,45 @@
 package com.karaoke.karaokebook.data.cell;
 
 import com.google.gson.annotations.SerializedName;
+import com.karaoke.karaokebook.data.model.Folder;
 
 public class FolderCellData implements CellData {
-    @SerializedName("folder_name")
-    private String folderName;
-    @SerializedName("bookmark_count")
-    private int bookmarkCount;
+    @SerializedName("id")
+    private final int id;
+    @SerializedName("name")
+    private String name;
+    @SerializedName("parent")
+    private int parent;
 
-    public FolderCellData(String folderName, int bookmarkCount) {
-        this.folderName = folderName;
-        this.bookmarkCount = bookmarkCount;
-    }
-    public String getFolderName() {
-        return folderName;
-    }
-
-    public int getBookmarkCount() {
-        return bookmarkCount;
+    public FolderCellData(int id, String name, int parent) {
+        this.id = id;
+        this.name = name;
+        this.parent = parent;
     }
 
+    public FolderCellData(Folder folder) {
+        this.id = folder.id;
+        this.name = folder.name;
+        this.parent = folder.parent;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getParent() {
+        return parent;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setParent(int parent) {
+        this.parent = parent;
+    }
 }

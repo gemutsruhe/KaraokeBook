@@ -12,6 +12,7 @@ import com.karaoke.karaokebook.data.model.Folder;
 @Database(entities = {Bookmark.class, Folder.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract BookmarkDao bookmarkDao();
+
     public abstract FolderDao folderDao();
 
     private static volatile AppDatabase instance;
@@ -19,7 +20,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getInstance(Context context) {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
-                    AppDatabase.class, "AppDatabase.db")
+                            AppDatabase.class, "AppDatabase.db")
                     //.createFromAsset("database/app_database.db")
                     .build();
         }

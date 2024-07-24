@@ -32,5 +32,4 @@ public class DBConstants {
             + "bookmarks_num INTEGER DEFAULT 0)";
 
 
-
 }

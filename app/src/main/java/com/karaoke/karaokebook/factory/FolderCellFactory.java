@@ -9,7 +9,7 @@ import com.karaoke.karaokebook.data.cell.CellData;
 import com.karaoke.karaokebook.data.cell.FolderCellData;
 import com.karaoke.karaokebook.databinding.CellFolderBinding;
 
-public class FolderCellFactory extends CellFactory{
+public class FolderCellFactory extends CellFactory {
     FolderCellFactory(Context context, ViewGroup parent) {
         super(context, parent);
     }
@@ -20,8 +20,8 @@ public class FolderCellFactory extends CellFactory{
 
         FolderCellData folderCellData = (FolderCellData) cellData;
 
-        setTextView(binding.folderNameTextView, folderCellData.getFolderName());
-        setTextView(binding.folderItemNumTextView, String.valueOf(folderCellData.getBookmarkCount()));
+        setTextView(binding.folderNameTextView, folderCellData.getName());
+        setTextView(binding.folderItemNumTextView, String.valueOf(folderCellData.getParent()));
 
         return binding;
     }

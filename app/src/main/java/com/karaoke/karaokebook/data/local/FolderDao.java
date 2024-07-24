@@ -23,4 +23,7 @@ public interface FolderDao {
 
     @Query("SELECT * FROM folder")
     List<Folder> getAll();
+
+    @Query("SELECT * FROM folder WHERE parent = :parent")
+    List<Folder> get(int parent);
 }

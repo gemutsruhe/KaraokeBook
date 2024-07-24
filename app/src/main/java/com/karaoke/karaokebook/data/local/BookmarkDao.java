@@ -20,5 +20,6 @@ public interface BookmarkDao {
     @Query("SELECT * FROM bookmark")
     List<Bookmark> getAll();
 
-
+    @Query("SELECT * FROM bookmark WHERE parent = :parent")
+    List<Bookmark> get(int parent);
 }

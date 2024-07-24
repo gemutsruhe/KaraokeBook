@@ -2,8 +2,8 @@ package com.karaoke.karaokebook.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.karaoke.karaokebook.data.model.ListLiveData;
 import com.karaoke.karaokebook.data.cell.SongCellData;
+import com.karaoke.karaokebook.data.model.ListLiveData;
 
 import java.util.List;
 
@@ -28,6 +28,7 @@ public class SearchedSongRepository {
     public ListLiveData<SongCellData> getSongCellDataList() {
         return liveData;
     }
+
     public MutableLiveData<Boolean> getSearchState() {
         return searchState;
     }

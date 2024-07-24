@@ -5,20 +5,22 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 
 import com.karaoke.karaokebook.data.local.BookmarkDB;
+import com.karaoke.karaokebook.data.repository.LibraryRepository;
 
-public class FolderListLayout extends LinearLayout {
+public class ItemListLayout extends LinearLayout {
     LayoutInflater inflater;
     BookmarkDB bookmarkDB;
-    public FolderListLayout(Context context) {
+    LibraryRepository libraryRepository;
+
+    public ItemListLayout(Context context) {
         super(context);
-        //this.context = context;
+
         this.setOrientation(LinearLayout.VERTICAL);
 
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
     }
 
-    public void addDirectories() {
+    public void update(int folder) {
 
     }
 }
