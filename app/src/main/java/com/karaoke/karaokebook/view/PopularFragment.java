@@ -58,7 +58,7 @@ public class PopularFragment extends Fragment {
 
     private void initPopularList() {
         for (int type = 0; type <= 2; type++) {
-            popularLayoutList.add(new PopularSongListLayout(getContext()));
+            popularLayoutList.add(new PopularSongListLayout(getContext(), getViewLifecycleOwner()));
         }
     }
 

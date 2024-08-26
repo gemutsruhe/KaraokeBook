@@ -12,12 +12,15 @@ public class BookmarkCellData implements CellData {
     private String singer;
     @SerializedName("pitch")
     private int pitch;
+    private int parent;
 
 
     public BookmarkCellData(Bookmark bookmark) {
         name = bookmark.name;
         singer = bookmark.singer;
-        number = Integer.parseInt(bookmark.number);
+        number = bookmark.number;
+        pitch = bookmark.pitch;
+        parent = bookmark.parent;
     }
 
     public int getSongNumber() {
@@ -35,4 +38,10 @@ public class BookmarkCellData implements CellData {
     public int getPitch() {
         return pitch;
     }
+
+    public int getParent() {
+        return parent;
+    }
+
+    public void setParent(int parent) { this.parent = parent; }
 }

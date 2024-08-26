@@ -6,6 +6,7 @@ import android.util.Log;
 import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.data.model.ListLiveData;
 import com.karaoke.karaokebook.data.repository.PopularChartRepository;
+import com.karaoke.karaokebook.data.repository.SongRepository;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -32,9 +33,9 @@ public class GetPopularSong {
     public static void get(int type) {
         new Thread(() -> {
             String url = buildURL(type + 1);
-            ListLiveData<SongCellData> data = PopularChartRepository.getInstance().getPopularList(type);
+            ListLiveData<Integer> data = PopularChartRepository.getInstance().getPopularList(type);
 
-            ArrayList<SongCellData> popularSongList = new ArrayList<>();
+            ArrayList<Integer> popularSongList = new ArrayList<>();
             while (true) {
                 try {
                     Document doc = Jsoup.connect(url).get();
@@ -47,8 +48,8 @@ public class GetPopularSong {
                         String songTitle = element.child(2).text();
                         String singer = element.child(3).text();
 
-                        SongCellData songCellData = new SongCellData(songNum, songTitle, singer, false);
-                        popularSongList.add(songCellData);
+                        SongRepository.getInstance().addSongData(Integer.parseInt(songNum), songTitle, singer);
+                        popularSongList.add(Integer.parseInt(songNum));
                     }
                     data.addAll(popularSongList);
                     break;

@@ -10,17 +10,17 @@ import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
 
 public class SearchedSongViewModel extends ViewModel {
     private SearchedSongRepository searchedSongRepository;
-    private ListLiveData<SongCellData> songCellDataList;
-    private MutableLiveData<Boolean> searchState;
+    private final ListLiveData<Integer> songNumberList;
+    private final MutableLiveData<Boolean> searchState;
 
     public SearchedSongViewModel() {
         searchedSongRepository = SearchedSongRepository.getInstance();
-        songCellDataList = searchedSongRepository.getSongCellDataList();
+        songNumberList = searchedSongRepository.getSongNumberList();
         searchState = searchedSongRepository.getSearchState();
     }
 
-    public ListLiveData<SongCellData> getSongCellDataList() {
-        return songCellDataList;
+    public ListLiveData<Integer> getSongNumberList() {
+        return songNumberList;
     }
 
     public MutableLiveData<Boolean> getSearchState() {

@@ -2,8 +2,8 @@ package com.karaoke.karaokebook.data.remote;
 
 import android.net.Uri;
 
-import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
+import com.karaoke.karaokebook.data.repository.SongRepository;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SearchSong {
+
+    private static final SongRepository songRepository = SongRepository.getInstance();
 
     private static final HashMap<String, String> searchTypeMap = new HashMap<String, String>() {
         {
@@ -54,7 +56,7 @@ public class SearchSong {
 
         int pageNum = 1;
         while (Boolean.TRUE.equals(searchedSongRepository.getSearchState().getValue())) {
-            ArrayList<SongCellData> songCellDataList = new ArrayList<>();
+            ArrayList<Integer> songNumberList = new ArrayList<>();
 
             String pageUrl = url + pageNum;
 
@@ -72,11 +74,11 @@ public class SearchSong {
                     String number = elements.get(firstIdx).text();
                     String title = elements.get(firstIdx + 1).text();
                     String singer = elements.get(firstIdx + 2).text();
-                    //Boolean is_bookmarked = bookmarkDB.getBookmark(number);
-                    SongCellData songCellData = new SongCellData(number, title, singer, false);
-                    songCellDataList.add(songCellData);
+                    songRepository.addSongData(Integer.parseInt(number), title, singer);
+
+                    songNumberList.add(Integer.parseInt(number));
                 }
-                searchedSongRepository.addDataList(songCellDataList);
+                searchedSongRepository.addDataList(songNumberList);
                 pageNum++;
 
             } catch (IOException e) {

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.viewbinding.ViewBinding;
 
 import com.karaoke.karaokebook.data.cell.CellData;
@@ -16,9 +17,11 @@ public abstract class CellFactory {
     protected final LayoutInflater inflater;
     protected final ViewGroup parent;
     protected final Resources resources;
+    protected final LifecycleOwner lifecycleOwner;
 
-    CellFactory(Context context, ViewGroup parent) {
+    CellFactory(Context context, LifecycleOwner lifecycleOwner, ViewGroup parent) {
         this.context = context;
+        this.lifecycleOwner = lifecycleOwner;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.parent = parent;
         this.resources = context.getResources();

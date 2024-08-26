@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android" >
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="data"
-            type="com.karaoke.karaokebook.data.cell.SongCellData" />
+            type="com.karaoke.karaokebook.data.cell.SongCellData"
+            />
+        <variable
+            name="viewModel"
+            type="com.karaoke.karaokebook.viewModel.LibraryViewModel" />
+
     </data>
 
     <LinearLayout
@@ -17,10 +22,10 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.2"
-            app:songNumber="@{data.number}"
-            android:textSize="20dp"
+            android:gravity="center"
             android:padding="8dp"
-            android:gravity="center"/>
+            app:songNumber="@{data.number}"
+            android:textSize="20dp"/>
 
         <LinearLayout
             android:layout_width="0dp"
@@ -36,7 +41,7 @@
                 android:maxLines="1"
                 android:padding="8dp"
                 android:text="@{data.title}"
-                android:textSize="18dp" />
+                android:textSize="18dp"/>
 
             <TextView
                 android:id="@+id/songSingerTextView"
@@ -49,27 +54,13 @@
 
         </LinearLayout>
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/bookmarkImageView"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1">
-
-            <TextView
-                android:id="@+id/keyLevelTextView"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                app:songPitch="@{data.pitch}"
-                android:gravity="center"/>
-
-            <TextView
-                android:id="@+id/keyTextView"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="key" />
-        </LinearLayout>
+            android:layout_weight="1"
+            android:padding="12dp"
+            app:bookmarkIcon="@{data.bookmarked}"
+            android:onClick="@{() -> !data.bookmarked ? viewModel.addBookmark(data) : viewModel.deleteBookmark(data)}"/>
     </LinearLayout>
 </layout>

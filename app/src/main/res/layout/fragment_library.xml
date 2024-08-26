@@ -6,36 +6,28 @@
     android:orientation="vertical">
 
     <LinearLayout
+
+        android:id="@+id/libraryMenuLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="10dp">
+        android:background="@drawable/border"
+        android:orientation="horizontal">
 
         <Button
-            android:id="@+id/showFoldersButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="북마크 목록" />
+            android:id="@+id/showFolderButton"
+            android:text="폴더"
+            style="@style/MenuButtonTheme"
+            app:backgroundTint="@null" />
 
         <Button
-            android:id="@+id/showBookmarksButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="폴더" />
-
-        <Button
-            android:id="@+id/addFolderButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Add Folder" />
+            android:id="@+id/showBookmarkButton"
+            android:text="북마크"
+            style="@style/MenuButtonTheme"
+            app:backgroundTint="@null" />
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/itemScrollView"
+    <FrameLayout
+        android:id="@+id/libraryFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ScrollView>
+        android:layout_height="match_parent" />
 </LinearLayout>

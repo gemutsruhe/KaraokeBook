@@ -11,7 +11,6 @@ import android.widget.Spinner;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.karaoke.karaokebook.data.local.BookmarkDB;
 import com.karaoke.karaokebook.databinding.FragmentSearchBinding;
 import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
 import com.karaoke.karaokebook.viewModel.SearchedSongViewModel;
@@ -30,7 +29,6 @@ public class SearchFragment extends Fragment {
     SearchedSongViewModel searchedSongViewModel;
     String[] natList = {"한국", "팝송", "일본"};
     String[] typeList = {"제목", "가수", "가사"};
-    BookmarkDB bookmarkDB;
     ExecutorService executorService;
     Boolean searchState;
     View v;
@@ -41,7 +39,7 @@ public class SearchFragment extends Fragment {
         executorService = Executors.newSingleThreadExecutor();
         binding = FragmentSearchBinding.inflate(inflater, container, false);
 
-        searchedSongListLayout = new SearchedSongListLayout(getContext());
+        searchedSongListLayout = new SearchedSongListLayout(getContext(), getViewLifecycleOwner());
         binding.searchedSongScrollView.addView(searchedSongListLayout);
 
         setSpinnerAdapter(binding.typeSpinner, typeList);
@@ -50,11 +48,11 @@ public class SearchFragment extends Fragment {
         searchedSongRepository = SearchedSongRepository.getInstance();
         searchedSongViewModel = new SearchedSongViewModel();
 
-        searchedSongViewModel.getSongCellDataList().observe(getViewLifecycleOwner(), songCellDataList -> {
+        searchedSongViewModel.getSongNumberList().observe(getViewLifecycleOwner(), songCellDataList -> {
             searchedSongListLayout.addSearchedSongs(songCellDataList);
         });
 
-        searchedSongViewModel.getSongCellDataList().observe(getViewLifecycleOwner(), songCellData -> {
+        searchedSongViewModel.getSongNumberList().observe(getViewLifecycleOwner(), songCellData -> {
             searchedSongListLayout.addSearchedSongs(songCellData);
         });
 
@@ -62,7 +60,7 @@ public class SearchFragment extends Fragment {
             this.searchState = searchState;
 
             if(searchState) {
-                searchedSongRepository.getSongCellDataList().clear(false);
+                searchedSongRepository.getSongNumberList().clear(false);
                 searchedSongListLayout.removeAllViews();
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.searchImageView.setVisibility(View.GONE);

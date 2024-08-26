@@ -21,6 +21,15 @@ public interface FolderDao {
     @Delete
     void delete(Folder folder);
 
+    @Query("DELETE FROM folder WHERE id = :id")
+    void deleteById(int id);
+
+    @Query("UPDATE folder SET name = :name WHERE id = :id")
+    void updateFolder(int id, String name);
+
+    @Query("UPDATE folder SET parent = :parent WHERE id = :id")
+    void updateFolder(int id, int parent);
+
     @Query("SELECT * FROM folder")
     List<Folder> getAll();
 

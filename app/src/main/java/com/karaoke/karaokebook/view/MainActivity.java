@@ -1,6 +1,7 @@
 package com.karaoke.karaokebook.view;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         ft = fragmentManager.beginTransaction();
 
         List<Fragment> fragmentList = fragmentManager.getFragments();
+        Log.e("TEST", String.valueOf(fragmentList.size()));
         for (Fragment fragment : fragmentList) {
             if (fragment.equals(target)) {
                 ft.show(fragment);

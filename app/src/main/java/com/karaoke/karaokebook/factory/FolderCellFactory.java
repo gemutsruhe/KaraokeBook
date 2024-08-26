@@ -3,6 +3,7 @@ package com.karaoke.karaokebook.factory;
 import android.content.Context;
 import android.view.ViewGroup;
 
+import androidx.lifecycle.LifecycleOwner;
 import androidx.viewbinding.ViewBinding;
 
 import com.karaoke.karaokebook.data.cell.CellData;
@@ -10,8 +11,9 @@ import com.karaoke.karaokebook.data.cell.FolderCellData;
 import com.karaoke.karaokebook.databinding.CellFolderBinding;
 
 public class FolderCellFactory extends CellFactory {
-    FolderCellFactory(Context context, ViewGroup parent) {
-        super(context, parent);
+
+    public FolderCellFactory(Context context, LifecycleOwner lifecycleOwner, ViewGroup parent) {
+        super(context, lifecycleOwner, parent);
     }
 
     @Override

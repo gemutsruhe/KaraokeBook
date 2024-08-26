@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class PopularChartRepository {
     private static PopularChartRepository instance;
 
-    ArrayList<ListLiveData<SongCellData>> popularList;
+    ArrayList<ListLiveData<Integer>> popularList;
 
     private PopularChartRepository() {
         initRepository();
@@ -29,7 +29,7 @@ public class PopularChartRepository {
         }
     }
 
-    public ListLiveData<SongCellData> getPopularList(int i) {
+    public ListLiveData<Integer> getPopularList(int i) {
         return popularList.get(i);
     }
 }

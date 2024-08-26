@@ -22,4 +22,7 @@ public interface BookmarkDao {
 
     @Query("SELECT * FROM bookmark WHERE parent = :parent")
     List<Bookmark> get(int parent);
+
+    @Query("DELETE FROM bookmark WHERE number = :songNumber")
+    void delete(int songNumber);
 }

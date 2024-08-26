@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/addFolderButton"
+            android:layout_width="wrap_content"
+            android:text="폴더추가"
+            style="@style/MenuButtonTheme"
+            app:backgroundTint="@null"/>
+
+
+        <Button
+            android:id="@+id/deleteFolderButton"
+            android:layout_width="wrap_content"
+            android:text="폴더삭제"
+            style="@style/MenuButtonTheme"
+            app:backgroundTint="@null"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/itemScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ScrollView>
+</LinearLayout>
