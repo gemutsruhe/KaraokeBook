@@ -30,4 +30,8 @@ public abstract class AppDatabase extends RoomDatabase {
 
         return instance;
     }
+
+    public static AppDatabase getInstance() {
+        return instance;
+    }
 }

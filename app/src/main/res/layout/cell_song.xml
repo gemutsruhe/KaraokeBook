@@ -5,9 +5,6 @@
             name="data"
             type="com.karaoke.karaokebook.data.cell.SongCellData"
             />
-        <variable
-            name="viewModel"
-            type="com.karaoke.karaokebook.viewModel.LibraryViewModel" />
 
     </data>
 
@@ -60,7 +57,6 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="12dp"
-            app:bookmarkIcon="@{data.bookmarked}"
-            android:onClick="@{() -> !data.bookmarked ? viewModel.addBookmark(data) : viewModel.deleteBookmark(data)}"/>
+            app:bookmarkIcon="@{data.bookmark}"/>
     </LinearLayout>
 </layout>

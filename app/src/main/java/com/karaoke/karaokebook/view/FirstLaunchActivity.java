@@ -24,6 +24,7 @@ import com.google.android.gms.tasks.Task;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.normal.TedPermission;
 import com.karaoke.karaokebook.R;
+import com.karaoke.karaokebook.data.local.AppDatabase;
 import com.karaoke.karaokebook.data.model.User;
 import com.karaoke.karaokebook.data.remote.LibraryAPI;
 import com.karaoke.karaokebook.data.remote.NetworkClient;
@@ -53,6 +54,7 @@ public class FirstLaunchActivity extends AppCompatActivity {
 
         sharedPref = this.getSharedPreferences(getString(R.string.shared_pref), Context.MODE_PRIVATE);
         //if (sharedPref.contains(sharedPrefKey)) {
+        AppDatabase.getInstance(getApplicationContext());
         goToMainActivity();
         //}
 

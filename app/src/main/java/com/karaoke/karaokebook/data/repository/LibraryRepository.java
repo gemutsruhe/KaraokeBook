@@ -3,36 +3,41 @@ package com.karaoke.karaokebook.data.repository;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.karaoke.karaokebook.data.cell.BookmarkCellData;
 import com.karaoke.karaokebook.data.cell.FolderCellData;
 import com.karaoke.karaokebook.data.model.ListLiveData;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
 public class LibraryRepository {
-    public static LibraryRepository instance;
-    private final ListLiveData<FolderCellData> folderList;
+
+    private static LibraryRepository instance;
+    private final Map<Integer, FolderCellData> folderDataMap;
+
+    private final MutableLiveData<Integer> crtFolder;
+
+    private final HashMap<Integer, List<Integer>> folderTree;
+    private final HashMap<Integer, List<Integer>> bookmarkTree;
+
+    private final ListLiveData<Integer> folderList;
     private final ListLiveData<Integer> bookmarkList;
-    private final Set<Integer> bookmarkSet;
-    private final HashMap<Integer, List<FolderCellData>> folderTree;
-    private final HashMap<Integer, List<BookmarkCellData>> bookmarkTree;
-    private final MutableLiveData<Integer> folder;
-    private final ListLiveData<FolderCellData> crtFolderList;
-    private final ListLiveData<BookmarkCellData> crtBookmarkList;
+
+    private final ListLiveData<Integer> crtFolderList;
+    private final ListLiveData<Integer> crtBookmarkList;
 
     private LibraryRepository() {
+        folderDataMap = new HashMap<>();
+        crtFolder = new MutableLiveData<>(0);
 
         folderList = new ListLiveData<>();
         bookmarkList = new ListLiveData<>();
+
         folderTree = new HashMap<>();
         bookmarkTree = new HashMap<>();
+
         crtFolderList = new ListLiveData<>();
         crtBookmarkList = new ListLiveData<>();
-        folder = new MutableLiveData<>(0);
-        bookmarkSet = new HashSet<>();
     }
 
     public static LibraryRepository getInstance() {
@@ -43,7 +48,11 @@ public class LibraryRepository {
         return instance;
     }
 
-    public ListLiveData<FolderCellData> getFolderList() {
+    public Map<Integer, FolderCellData> getFolderDataMap() {
+        return folderDataMap;
+    }
+
+    public ListLiveData<Integer> getFolderList() {
         return folderList;
     }
 
@@ -51,31 +60,32 @@ public class LibraryRepository {
         return bookmarkList;
     }
 
-    public LiveData<Integer> getFolder() {
-        return folder;
+    public LiveData<Integer> getCrtFolder() {
+        return crtFolder;
     }
 
     public void setFolder(int folder) {
-        this.folder.postValue(folder);
+        this.crtFolder.postValue(folder);
     }
 
-    public HashMap<Integer, List<FolderCellData>> getFolderTree() {
+    public HashMap<Integer, List<Integer>> getFolderTree() {
         return folderTree;
     }
 
-    public HashMap<Integer, List<BookmarkCellData>> getBookmarkTree() {
+    public HashMap<Integer, List<Integer>> getBookmarkTree() {
         return bookmarkTree;
     }
 
-    public ListLiveData<FolderCellData> getCrtFolderList() {
+    public ListLiveData<Integer> getCrtFolderList() {
         return crtFolderList;
     }
 
-    public ListLiveData<BookmarkCellData> getCrtBookmarkList() {
+    public ListLiveData<Integer> getCrtBookmarkList() {
         return crtBookmarkList;
     }
 
-    public Set<Integer> getBookmarkSet() {
-        return bookmarkSet;
+    public void setBookmarkList(List<Integer> bookmarkList) {
+        this.bookmarkList.clear(false);
+        this.bookmarkList.addAll(bookmarkList);
     }
 }

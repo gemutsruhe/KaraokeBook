@@ -3,12 +3,13 @@ package com.karaoke.karaokebook.data.repository;
 import com.karaoke.karaokebook.data.cell.SongCellData;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SongRepository {
     private static SongRepository instance;
 
-    private final HashMap<Integer, SongCellData> songDataMap;
-
+    private final Map<Integer, SongCellData> songDataMap;
 
     private SongRepository() {
         songDataMap = new HashMap<>();
@@ -39,6 +40,9 @@ public class SongRepository {
 
     public SongCellData getSongData(int songNumber) {
         return songDataMap.getOrDefault(songNumber, null);
+    }
 
+    public Map<Integer, SongCellData> getSongDataMap() {
+        return songDataMap;
     }
 }

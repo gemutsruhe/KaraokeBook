@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.karaoke.karaokebook.R;
 import com.karaoke.karaokebook.databinding.ActivityMainBinding;
+import com.karaoke.karaokebook.viewModel.LibraryViewModel;
 
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     FragmentTransaction ft;
 
-    Fragment crtFragment = null;
+    LibraryViewModel libraryViewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         fragmentManager = getSupportFragmentManager();
+
+
 
         searchFragment = new SearchFragment();
         popularFragment = new PopularFragment();
@@ -71,7 +74,6 @@ public class MainActivity extends AppCompatActivity {
         ft = fragmentManager.beginTransaction();
 
         List<Fragment> fragmentList = fragmentManager.getFragments();
-        Log.e("TEST", String.valueOf(fragmentList.size()));
         for (Fragment fragment : fragmentList) {
             if (fragment.equals(target)) {
                 ft.show(fragment);

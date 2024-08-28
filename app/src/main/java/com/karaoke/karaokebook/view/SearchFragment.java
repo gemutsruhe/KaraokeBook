@@ -1,5 +1,6 @@
 package com.karaoke.karaokebook.view;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,10 +11,14 @@ import android.widget.Spinner;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Database;
 
 import com.karaoke.karaokebook.databinding.FragmentSearchBinding;
-import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
-import com.karaoke.karaokebook.viewModel.SearchedSongViewModel;
+import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
+import com.karaoke.karaokebook.viewModel.SearchViewModel;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,15 +28,14 @@ public class SearchFragment extends Fragment {
     //LayoutInflater inflater = null;
     FragmentSearchBinding binding;
 
-    SearchedSongListLayout searchedSongListLayout;
-
-    SearchedSongRepository searchedSongRepository;
-    SearchedSongViewModel searchedSongViewModel;
+    DatabaseViewModel databaseViewModel;
+    SearchViewModel searchViewModel;
     String[] natList = {"한국", "팝송", "일본"};
     String[] typeList = {"제목", "가수", "가사"};
     ExecutorService executorService;
     Boolean searchState;
     View v;
+    @SuppressLint("NotifyDataSetChanged")
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -39,29 +43,38 @@ public class SearchFragment extends Fragment {
         executorService = Executors.newSingleThreadExecutor();
         binding = FragmentSearchBinding.inflate(inflater, container, false);
 
-        searchedSongListLayout = new SearchedSongListLayout(getContext(), getViewLifecycleOwner());
-        binding.searchedSongScrollView.addView(searchedSongListLayout);
+        databaseViewModel = new ViewModelProvider(requireActivity()).get(DatabaseViewModel.class);
+        searchViewModel = new ViewModelProvider(this).get(SearchViewModel.class);
+
+        RecyclerView recyclerView = binding.searchSongView;
+        SongAdapter adapter = new SongAdapter(getViewLifecycleOwner(), searchViewModel.getSongDataMap(), data -> {
+            if (!data.isBookmark()) {
+                databaseViewModel.addBookmark(data);
+            } else {
+                databaseViewModel.deleteBookmark(data);
+            }
+        });
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL, false));
 
         setSpinnerAdapter(binding.typeSpinner, typeList);
         setSpinnerAdapter(binding.natSpinner, natList);
 
-        searchedSongRepository = SearchedSongRepository.getInstance();
-        searchedSongViewModel = new SearchedSongViewModel();
-
-        searchedSongViewModel.getSongNumberList().observe(getViewLifecycleOwner(), songCellDataList -> {
-            searchedSongListLayout.addSearchedSongs(songCellDataList);
+        searchViewModel.getSearchList().observe(getViewLifecycleOwner(), songCellDataList -> {
+            //searchedSongListLayout.addSearchedSongs(songCellDataList);
         });
 
-        searchedSongViewModel.getSongNumberList().observe(getViewLifecycleOwner(), songCellData -> {
-            searchedSongListLayout.addSearchedSongs(songCellData);
-        });
+        //searchedSongListLayout.addSearchedSongs(songCellData);
+        searchViewModel.getSearchList().observe(getViewLifecycleOwner(), adapter::setSongList);
 
-        searchedSongViewModel.getSearchState().observe(getViewLifecycleOwner(), searchState -> {
+        searchViewModel.getSearchState().observe(getViewLifecycleOwner(), searchState -> {
             this.searchState = searchState;
 
             if(searchState) {
-                searchedSongRepository.getSongNumberList().clear(false);
-                searchedSongListLayout.removeAllViews();
+                //searchedSongRepository.getSongNumberList().clear(false);
+                searchViewModel.clearSearchSongList();
+                //searchedSongListLayout.removeAllViews();
                 binding.progressBar.setVisibility(View.VISIBLE);
                 binding.searchImageView.setVisibility(View.GONE);
             } else {
@@ -76,12 +89,12 @@ public class SearchFragment extends Fragment {
                 String natName = binding.natSpinner.getSelectedItem().toString();
                 String searchText = binding.searchStrEditText.getText().toString();
 
-                searchedSongViewModel.search(searchType, natName, searchText);
+                searchViewModel.search(searchType, natName, searchText);
             }
         });
 
         binding.progressBar.setOnClickListener(view -> {
-            searchedSongViewModel.stopSearch();
+            searchViewModel.stopSearch();
         });
 
         return binding.getRoot();
@@ -93,11 +106,8 @@ public class SearchFragment extends Fragment {
         spinner.setAdapter(adapter);
     }
 
-
-
     @Override
     public void onPause() {
         super.onPause();
-        Log.e("TEST", "onPause");
     }
 }

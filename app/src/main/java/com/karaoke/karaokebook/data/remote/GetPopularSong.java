@@ -3,9 +3,8 @@ package com.karaoke.karaokebook.data.remote;
 import android.net.Uri;
 import android.util.Log;
 
-import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.data.model.ListLiveData;
-import com.karaoke.karaokebook.data.repository.PopularChartRepository;
+import com.karaoke.karaokebook.data.repository.PopularSongRepository;
 import com.karaoke.karaokebook.data.repository.SongRepository;
 
 import org.jsoup.Jsoup;
@@ -33,7 +32,7 @@ public class GetPopularSong {
     public static void get(int type) {
         new Thread(() -> {
             String url = buildURL(type + 1);
-            ListLiveData<Integer> data = PopularChartRepository.getInstance().getPopularList(type);
+            ListLiveData<Integer> data = PopularSongRepository.getInstance().getPopularList(type);
 
             ArrayList<Integer> popularSongList = new ArrayList<>();
             while (true) {

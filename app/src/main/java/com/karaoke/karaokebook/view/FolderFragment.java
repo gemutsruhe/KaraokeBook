@@ -3,7 +3,6 @@ package com.karaoke.karaokebook.view;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.karaoke.karaokebook.data.repository.LibraryRepository;
 import com.karaoke.karaokebook.databinding.CellFolderBinding;
 import com.karaoke.karaokebook.databinding.FragmentFolderBinding;
+import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
 import com.karaoke.karaokebook.viewModel.LibraryViewModel;
 
 public class FolderFragment extends Fragment {
     FragmentFolderBinding binding;
-    LibraryRepository libraryRepository;
+    DatabaseViewModel databaseViewModel;
     LibraryViewModel libraryViewModel;
 
     @Nullable
@@ -30,11 +31,12 @@ public class FolderFragment extends Fragment {
 
         binding = FragmentFolderBinding.inflate(inflater, container, false);
 
+        databaseViewModel = new ViewModelProvider(requireActivity()).get(DatabaseViewModel.class);
+        libraryViewModel = new ViewModelProvider(requireParentFragment()).get(LibraryViewModel.class);
+
         binding.addFolderButton.setOnClickListener((view) -> {
             new FolderNameDialog(getContext());
         });
-
-        libraryRepository = LibraryRepository.getInstance();
 
         return binding.getRoot();
     }
@@ -52,8 +54,8 @@ public class FolderFragment extends Fragment {
 
             this.setPositiveButton("OK", (dialogInterface, i) -> {
                 String folderName = input.getText().toString();
-                int parentFolderId = libraryRepository.getFolder().getValue();
-                libraryViewModel.addFolder(folderName, parentFolderId);
+                int parentFolderId = libraryViewModel.getCrtFolder().getValue();
+                databaseViewModel.addFolder(folderName, parentFolderId);
 
                 CellFolderBinding newFolder = CellFolderBinding.inflate(getLayoutInflater());
                 newFolder.folderNameTextView.setText(folderName);

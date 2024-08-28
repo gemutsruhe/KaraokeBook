@@ -1,5 +1,6 @@
 package com.karaoke.karaokebook.data;
 
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 

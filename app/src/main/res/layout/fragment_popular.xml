@@ -38,8 +38,8 @@
             />
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/popularScrollView"
+    <FrameLayout
+        android:id="@+id/popularListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>

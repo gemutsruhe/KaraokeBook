@@ -1,22 +1,21 @@
 package com.karaoke.karaokebook.data.repository;
 
-import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.data.model.ListLiveData;
 
 import java.util.ArrayList;
 
-public class PopularChartRepository {
-    private static PopularChartRepository instance;
+public class PopularSongRepository {
+    private static PopularSongRepository instance;
 
     ArrayList<ListLiveData<Integer>> popularList;
 
-    private PopularChartRepository() {
+    private PopularSongRepository() {
         initRepository();
     }
 
-    public static PopularChartRepository getInstance() {
+    public static PopularSongRepository getInstance() {
         if (instance == null) {
-            instance = new PopularChartRepository();
+            instance = new PopularSongRepository();
         }
         return instance;
     }
@@ -31,5 +30,9 @@ public class PopularChartRepository {
 
     public ListLiveData<Integer> getPopularList(int i) {
         return popularList.get(i);
+    }
+
+    public int getSongNumber(int type, int pos) {
+        return popularList.get(type).getValue().get(pos);
     }
 }

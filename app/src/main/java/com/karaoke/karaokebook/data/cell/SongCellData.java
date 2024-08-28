@@ -9,23 +9,26 @@ public class SongCellData implements CellData {
     private final int number;
     private final String title;
     private final String singer;
-    private final Integer pitch;
-    private final MutableLiveData<Boolean> bookmarked = new MutableLiveData<>(false);
+    private final int pitch;
+    private final MutableLiveData<Boolean> bookmark = new MutableLiveData<>(false);
+    private final int parent;
 
-    public SongCellData(int number, String title, String singer, boolean bookmarked) {
+    public SongCellData(int number, String title, String singer, boolean bookmark) {
         this.number = number;
         this.title = title;
         this.singer = singer;
-        this.bookmarked.postValue(bookmarked);
-        pitch = 0;
+        this.bookmark.postValue(bookmark);
+        this.pitch = 0;
+        this.parent = -1;
     }
 
-    public SongCellData(int number, String title, String singer, boolean bookmarked, Integer pitch) {
+    public SongCellData(int number, String title, String singer, boolean bookmark, Integer pitch) {
         this.number = number;
         this.title = title;
         this.singer = singer;
-        this.bookmarked.postValue(bookmarked);
+        this.bookmark.postValue(bookmark);
         this.pitch = pitch;
+        this.parent = -1;
     }
 
     public SongCellData(Bookmark bookmark) {
@@ -33,7 +36,8 @@ public class SongCellData implements CellData {
         this.title = bookmark.name;
         this.singer = bookmark.singer;
         this.pitch = bookmark.pitch;
-        this.bookmarked.postValue(true);
+        this.bookmark.postValue(true);
+        this.parent = bookmark.parent;
     }
 
     public int getNumber() {
@@ -52,15 +56,15 @@ public class SongCellData implements CellData {
         return pitch;
     }
 
-    public boolean isBookmarked() {
-        return bookmarked.getValue();
+    public boolean isBookmark() {
+        return bookmark.getValue();
     }
 
     public void setBookmark(boolean bookmark) {
-        bookmarked.postValue(bookmark);
+        this.bookmark.postValue(bookmark);
     }
 
-    public LiveData<Boolean> getBookmarked() {
-        return bookmarked;
+    public LiveData<Boolean> getBookmark() {
+        return bookmark;
     }
 }

@@ -6,19 +6,19 @@ import com.karaoke.karaokebook.data.model.ListLiveData;
 
 import java.util.List;
 
-public class SearchedSongRepository {
-    private static SearchedSongRepository instance;
+public class SearchSongRepository {
+    private static SearchSongRepository instance;
     private final ListLiveData<Integer> liveData;
     private final MutableLiveData<Boolean> searchState;
 
-    private SearchedSongRepository() {
+    private SearchSongRepository() {
         liveData = new ListLiveData<>();
         searchState = new MutableLiveData<>(false);
     }
 
-    public static SearchedSongRepository getInstance() {
+    public static SearchSongRepository getInstance() {
         if (instance == null) {
-            instance = new SearchedSongRepository();
+            instance = new SearchSongRepository();
         }
 
         return instance;
@@ -38,5 +38,9 @@ public class SearchedSongRepository {
 
     public void addDataList(List<Integer> songCellDataList) {
         liveData.addAll(songCellDataList);
+    }
+
+    public Integer getSongNumber(int pos) {
+        return liveData.getValue().get(pos);
     }
 }

@@ -4,6 +4,8 @@ import com.google.gson.annotations.SerializedName;
 import com.karaoke.karaokebook.data.model.Bookmark;
 
 public class BookmarkCellData implements CellData {
+    @SerializedName("id")
+    private int id;
     @SerializedName("number")
     private int number;
     @SerializedName("name")
@@ -21,6 +23,10 @@ public class BookmarkCellData implements CellData {
         number = bookmark.number;
         pitch = bookmark.pitch;
         parent = bookmark.parent;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public int getSongNumber() {

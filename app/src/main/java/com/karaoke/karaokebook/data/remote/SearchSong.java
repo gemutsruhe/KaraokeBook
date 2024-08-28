@@ -2,7 +2,7 @@ package com.karaoke.karaokebook.data.remote;
 
 import android.net.Uri;
 
-import com.karaoke.karaokebook.data.repository.SearchedSongRepository;
+import com.karaoke.karaokebook.data.repository.SearchSongRepository;
 import com.karaoke.karaokebook.data.repository.SongRepository;
 
 import org.jsoup.Jsoup;
@@ -52,10 +52,10 @@ public class SearchSong {
     public static void search(String searchType, String natType, String searchText) {
         String url = buildURL(searchType, natType, searchText);
 
-        SearchedSongRepository searchedSongRepository = SearchedSongRepository.getInstance();
+        SearchSongRepository searchSongRepository = SearchSongRepository.getInstance();
 
         int pageNum = 1;
-        while (Boolean.TRUE.equals(searchedSongRepository.getSearchState().getValue())) {
+        while (Boolean.TRUE.equals(searchSongRepository.getSearchState().getValue())) {
             ArrayList<Integer> songNumberList = new ArrayList<>();
 
             String pageUrl = url + pageNum;
@@ -78,7 +78,7 @@ public class SearchSong {
 
                     songNumberList.add(Integer.parseInt(number));
                 }
-                searchedSongRepository.addDataList(songNumberList);
+                searchSongRepository.addDataList(songNumberList);
                 pageNum++;
 
             } catch (IOException e) {
@@ -86,6 +86,6 @@ public class SearchSong {
             }
         }
 
-        SearchedSongRepository.getInstance().getSearchState().postValue(false);
+        //SearchSongRepository.getInstance().getSearchState().postValue(false);
     }
 }

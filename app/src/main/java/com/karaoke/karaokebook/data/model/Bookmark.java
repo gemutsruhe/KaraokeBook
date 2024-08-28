@@ -11,7 +11,6 @@ import com.karaoke.karaokebook.data.cell.SongCellData;
 public class Bookmark {
     @PrimaryKey(autoGenerate = true)
     public int id;
-
     public int number;
     public String name;
     public String singer;
