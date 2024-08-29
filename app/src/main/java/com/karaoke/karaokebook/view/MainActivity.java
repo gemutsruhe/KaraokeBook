@@ -1,7 +1,6 @@
 package com.karaoke.karaokebook.view;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +10,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.karaoke.karaokebook.R;
 import com.karaoke.karaokebook.databinding.ActivityMainBinding;
+import com.karaoke.karaokebook.view.library.LibraryFragment;
+import com.karaoke.karaokebook.view.song.PopularFragment;
+import com.karaoke.karaokebook.view.song.SearchFragment;
 import com.karaoke.karaokebook.viewModel.LibraryViewModel;
 
 import java.util.List;

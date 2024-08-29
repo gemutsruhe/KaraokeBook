@@ -1,6 +1,7 @@
-package com.karaoke.karaokebook.view;
+package com.karaoke.karaokebook.view.library;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,16 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.karaoke.karaokebook.databinding.FragmentLibraryBinding;
+import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
 import com.karaoke.karaokebook.viewModel.LibraryViewModel;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LibraryFragment extends Fragment {
     FragmentLibraryBinding binding;
+    DatabaseViewModel databaseViewModel;
     LibraryViewModel libraryViewModel;
 
     FragmentManager fragmentManager;
@@ -32,6 +37,7 @@ public class LibraryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentLibraryBinding.inflate(getLayoutInflater(), container, false);
 
+        databaseViewModel = new ViewModelProvider(requireActivity()).get(DatabaseViewModel.class);
         libraryViewModel = new ViewModelProvider(this).get(LibraryViewModel.class);
 
         folderFragment = new FolderFragment();
@@ -48,6 +54,10 @@ public class LibraryFragment extends Fragment {
         binding.showBookmarkButton.setOnClickListener((view) -> {
             showFragment(bookmarkFragment);
         });
+
+        libraryViewModel.getBookmarkList().observe(getViewLifecycleOwner(), bookmarkList -> libraryViewModel.createBookmarkTree(bookmarkList));
+
+        libraryViewModel.getFolderList().observe(getViewLifecycleOwner(), folderList -> libraryViewModel.createFolderTree(folderList));
 
         return binding.getRoot();
     }

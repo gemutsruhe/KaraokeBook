@@ -28,9 +28,10 @@
             app:backgroundTint="@null"/>
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/itemScrollView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/folderChildView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    </ScrollView>
+        android:layout_height="match_parent" />
+
+
 </LinearLayout>

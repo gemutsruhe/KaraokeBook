@@ -9,6 +9,8 @@ import androidx.lifecycle.LiveData;
 
 import com.karaoke.karaokebook.R;
 
+import java.util.Set;
+
 public class BindingAdapters {
     @BindingAdapter("app:songNumber")
     public static void setSongNumber(TextView textView, int songNumber) {
@@ -26,6 +28,11 @@ public class BindingAdapters {
         } else {
             textView.setText(String.valueOf(songPitch));
         }
+    }
 
+    @BindingAdapter("app:childNum")
+    public static void setChildNum(TextView textView, Set<Integer> child) {
+        if(child == null) textView.setText("0");
+        else textView.setText(String.valueOf(child.size()));
     }
 }

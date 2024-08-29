@@ -9,6 +9,7 @@ import com.karaoke.karaokebook.data.model.ListLiveData;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class LibraryRepository {
 
@@ -17,8 +18,8 @@ public class LibraryRepository {
 
     private final MutableLiveData<Integer> crtFolder;
 
-    private final HashMap<Integer, List<Integer>> folderTree;
-    private final HashMap<Integer, List<Integer>> bookmarkTree;
+    private final Map<Integer, Set<Integer>> folderTree;
+    private final Map<Integer, Set<Integer>> bookmarkTree;
 
     private final ListLiveData<Integer> folderList;
     private final ListLiveData<Integer> bookmarkList;
@@ -68,11 +69,11 @@ public class LibraryRepository {
         this.crtFolder.postValue(folder);
     }
 
-    public HashMap<Integer, List<Integer>> getFolderTree() {
+    public Map<Integer, Set<Integer>> getFolderTree() {
         return folderTree;
     }
 
-    public HashMap<Integer, List<Integer>> getBookmarkTree() {
+    public Map<Integer, Set<Integer>> getBookmarkTree() {
         return bookmarkTree;
     }
 
@@ -87,5 +88,15 @@ public class LibraryRepository {
     public void setBookmarkList(List<Integer> bookmarkList) {
         this.bookmarkList.clear(false);
         this.bookmarkList.addAll(bookmarkList);
+    }
+
+    public void addFolderData(FolderCellData data) {
+        folderDataMap.remove(data.getId());
+        folderDataMap.put(data.getId(), data);
+    }
+
+    public void setFolderList(List<Integer> folderList) {
+        this.folderList.clear(false);
+        this.folderList.addAll(folderList);
     }
 }

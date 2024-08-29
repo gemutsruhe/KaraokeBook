@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.view;
+package com.karaoke.karaokebook.view.song;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,9 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.karaoke.karaokebook.data.repository.PopularSongRepository;
 import com.karaoke.karaokebook.databinding.FragmentPopularBinding;
-import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
 import com.karaoke.karaokebook.viewModel.PopularViewModel;
 
 import java.util.ArrayList;

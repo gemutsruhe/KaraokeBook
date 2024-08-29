@@ -1,36 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="data"
+            type="com.karaoke.karaokebook.data.cell.FolderCellData" />
+        <variable
+            name="child"
+            type="java.util.Set&lt;java.lang.Integer&gt;" />
+    </data>
 
-    <TextView
-        android:id="@+id/folderNameTextView"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="6"
-        android:text="J-Pop"
-        android:textSize="22dp"
-        android:padding="8dp"/>
+    <LinearLayout
 
-    <TextView
-        android:id="@+id/folderItemNumTextView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="right"
-        android:text="0"
-        android:textSize="22dp"
-        android:padding="8dp"/>
-    <TextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="right"
-        android:text="곡"
-        android:textSize="22dp"
-        android:paddingLeft="0dp"
-        android:padding="8dp"
-        />
+        android:layout_margin="8dp">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/folderNameTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="6"
+            android:text="@{data.name}"
+            android:textSize="22dp"
+            android:padding="8dp"/>
+
+        <TextView
+            android:id="@+id/folderItemNumTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            app:childNum="@{child}"
+            android:textSize="22dp"
+            android:padding="8dp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:text="곡"
+            android:textSize="22dp"
+            android:paddingLeft="0dp"
+            android:padding="8dp"
+            />
+
+    </LinearLayout>
+</layout>

@@ -1,6 +1,7 @@
 package com.karaoke.karaokebook.viewModel;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -58,10 +59,15 @@ public class DatabaseViewModel extends AndroidViewModel {
         executor.execute(() -> {
             List<Folder> dbFolderList = appDatabase.folderDao().getAll();
 
+            List<Integer> folderList = new ArrayList<>();
             for (Folder folder : dbFolderList) {
+                Log.e("TEST", "folder.id : " + folder.id + ", folder.parent " + folder.parent);
                 FolderCellData folderCellData = new FolderCellData(folder);
-                libraryRepository.getFolderDataMap().put(folderCellData.getId(), folderCellData);
+                libraryRepository.addFolderData(folderCellData);
+                //libraryRepository.getFolderDataMap().put(folderCellData.getId(), folderCellData);
+                folderList.add(folder.id);
             }
+            libraryRepository.setFolderList(folderList);
         });
     }
 
@@ -89,6 +95,7 @@ public class DatabaseViewModel extends AndroidViewModel {
 
             List<Integer> bookmarkList = new ArrayList<>();
             for (Bookmark bookmark : dbFolderList) {
+
                 SongCellData songCellData = new SongCellData(bookmark);
                 songCellData.setBookmark(true);
                 songRepository.addSongData(songCellData);

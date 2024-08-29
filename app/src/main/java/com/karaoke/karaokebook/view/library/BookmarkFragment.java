@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.view;
+package com.karaoke.karaokebook.view.library;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -39,15 +39,6 @@ public class BookmarkFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         libraryViewModel.getBookmarkList().observe(getViewLifecycleOwner(), adapter::setBookmarkList);
-
-        //LinearLayout bookmarkListLayout = new ItemListLayout(getContext());
-        //binding.bookmarkScrollView.addView(bookmarkListLayout);
-
-        //CellFactoryProvider cellFactory = new CellFactoryProvider(new BookmarkCellFactory(getContext(), getViewLifecycleOwner(), bookmarkListLayout));
-
-//        libraryViewModel.getBookmarkList().observe(getViewLifecycleOwner(), bookmarkList -> {
-//            adapter.notifyDataSetChanged();
-//        });
 
         return binding.getRoot();
     }

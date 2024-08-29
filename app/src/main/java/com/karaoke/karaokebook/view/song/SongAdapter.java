@@ -1,7 +1,5 @@
-package com.karaoke.karaokebook.view;
+package com.karaoke.karaokebook.view.song;
 
-import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 

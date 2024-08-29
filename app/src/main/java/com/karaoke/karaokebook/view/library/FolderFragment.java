@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.view;
+package com.karaoke.karaokebook.view.library;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -13,9 +13,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.karaoke.karaokebook.data.repository.LibraryRepository;
-import com.karaoke.karaokebook.databinding.CellFolderBinding;
 import com.karaoke.karaokebook.databinding.FragmentFolderBinding;
 import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
 import com.karaoke.karaokebook.viewModel.LibraryViewModel;
@@ -38,6 +38,22 @@ public class FolderFragment extends Fragment {
             new FolderNameDialog(getContext());
         });
 
+        RecyclerView recyclerView = binding.folderChildView;
+        FolderAdapter adapter = new FolderAdapter(libraryViewModel.getFolderDataMap(), libraryViewModel.getSongDataMap(), libraryViewModel.getFolderTree(), libraryViewModel.getBookmarkTree());
+
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        libraryViewModel.getCrtFolder().observe(getViewLifecycleOwner(), folder -> {
+            libraryViewModel.updateItemList(folder);
+        });
+
+        libraryViewModel.getCrtFolderList().observe(getViewLifecycleOwner(), adapter::setCrtFolderList);
+
+        libraryViewModel.getCrtBookmarkList().observe(getViewLifecycleOwner(), adapter::setCrtBookmarkList);
+
+        databaseViewModel.getDBFolderList();
+
         return binding.getRoot();
     }
 
@@ -56,9 +72,7 @@ public class FolderFragment extends Fragment {
                 String folderName = input.getText().toString();
                 int parentFolderId = libraryViewModel.getCrtFolder().getValue();
                 databaseViewModel.addFolder(folderName, parentFolderId);
-
-                CellFolderBinding newFolder = CellFolderBinding.inflate(getLayoutInflater());
-                newFolder.folderNameTextView.setText(folderName);
+                databaseViewModel.getDBFolderList();
             });
             this.setNegativeButton("Cancel", (dialogInterface, i) -> dialogInterface.cancel());
 

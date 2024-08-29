@@ -34,6 +34,7 @@ public class SongRepository {
         if(!songDataMap.containsKey(data.getNumber())) {
             songDataMap.put(data.getNumber(), data);
         } else {
+            songDataMap.get(data.getNumber()).setParent(data.getParent());
             songDataMap.get(data.getNumber()).setBookmark(true);
         }
     }

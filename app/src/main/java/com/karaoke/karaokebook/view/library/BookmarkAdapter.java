@@ -1,4 +1,4 @@
-package com.karaoke.karaokebook.view;
+package com.karaoke.karaokebook.view.library;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -9,12 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.karaoke.karaokebook.data.cell.SongCellData;
-import com.karaoke.karaokebook.data.repository.LibraryRepository;
-import com.karaoke.karaokebook.data.repository.SongRepository;
 import com.karaoke.karaokebook.databinding.CellBookmarkBinding;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +41,6 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        Log.e("TEST", String.valueOf(bookmarkList.size()));
         return bookmarkList.size();
     }
 

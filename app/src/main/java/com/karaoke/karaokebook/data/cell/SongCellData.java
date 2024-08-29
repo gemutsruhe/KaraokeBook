@@ -11,7 +11,7 @@ public class SongCellData implements CellData {
     private final String singer;
     private final int pitch;
     private final MutableLiveData<Boolean> bookmark = new MutableLiveData<>(false);
-    private final int parent;
+    private int parent;
 
     public SongCellData(int number, String title, String singer, boolean bookmark) {
         this.number = number;
@@ -64,7 +64,15 @@ public class SongCellData implements CellData {
         this.bookmark.postValue(bookmark);
     }
 
+    public void setParent(int parent) {
+        this.parent = parent;
+    }
+
     public LiveData<Boolean> getBookmark() {
         return bookmark;
+    }
+
+    public int getParent() {
+        return parent;
     }
 }
