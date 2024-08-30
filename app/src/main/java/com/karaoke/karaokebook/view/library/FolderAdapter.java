@@ -33,6 +33,12 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<Integer> crtFolderList;
     private List<Integer> crtBookmarkList;
 
+    public interface OnFolderClickListener {
+        void onFolderClick(FolderCellData data);
+    }
+
+    private static FolderAdapter.OnFolderClickListener listener;
+
     public FolderAdapter(Map<Integer, FolderCellData> folderDataMap, Map<Integer, SongCellData> songDataMap, Map<Integer, Set<Integer>> folderTree, Map<Integer, Set<Integer>> bookmarkTree) {
         this.folderDataMap = folderDataMap;
         this.songDataMap = songDataMap;
@@ -59,7 +65,7 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if(holder instanceof FolderViewHolder) {
             int folderId = crtFolderList.get(position);
 
-            ((FolderViewHolder) holder).bind(folderDataMap.get(folderId), folderTree.get(folderId));
+            ((FolderViewHolder) holder).bind(folderDataMap.get(folderId), folderTree.get(folderId), bookmarkTree.get(folderId));
         } else if (holder instanceof BookmarkViewHolder) {
             int bookmarkId = crtBookmarkList.get(position - crtFolderList.size());
 
@@ -89,9 +95,11 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             this.binding = binding;
         }
 
-        public void bind(FolderCellData data, Set<Integer> child) {
+        public void bind(FolderCellData data, Set<Integer> childFolder, Set<Integer> childBookmark) {
             binding.setData(data);
-            binding.setChild(child);
+            binding.setChildFolder(childFolder);
+            binding.setChildBookmark(childBookmark);
+            binding.getRoot().setOnClickListener(view -> listener.onFolderClick(data));
             //if(child == null) child = new HashSet<>();
             //binding.setChild(child);
             /*if(child == null) binding.setChild(0);
@@ -119,5 +127,9 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void setCrtBookmarkList(List<Integer> crtBookmarkList) {
         this.crtBookmarkList = crtBookmarkList;
         notifyDataSetChanged();
+    }
+
+    public static void setOnFolderClickListener(FolderAdapter.OnFolderClickListener listener) {
+        FolderAdapter.listener = listener;
     }
 }

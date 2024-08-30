@@ -36,6 +36,7 @@ public class LibraryViewModel extends AndroidViewModel {
     private final ListLiveData<Integer> folderList;
     private final ListLiveData<Integer> bookmarkList;
 
+    private final LiveData<Integer> parentFolder;
     private final LiveData<Integer> crtFolder;
     private final ListLiveData<Integer> crtFolderList;
     private final ListLiveData<Integer> crtBookmarkList;
@@ -59,6 +60,7 @@ public class LibraryViewModel extends AndroidViewModel {
         folderList = libraryRepository.getFolderList();
         bookmarkList = libraryRepository.getBookmarkList();
 
+        parentFolder = libraryRepository.getParentFolder();
         crtFolder = libraryRepository.getCrtFolder();
         crtFolderList = libraryRepository.getCrtFolderList();
         crtBookmarkList = libraryRepository.getCrtBookmarkList();
@@ -67,17 +69,16 @@ public class LibraryViewModel extends AndroidViewModel {
         bookmarkTree = libraryRepository.getBookmarkTree();
 
         executor = Executors.newSingleThreadExecutor();
-
-
-        //getDBFolderList();
     }
 
-
-
+    public void updateItemList(int folder) {
+        executor.execute(() -> {
+            updateCrtFolderList(folder);
+            updateCrtBookmarkList(folder);
+        });
+    }
 
     public void updateCrtFolderList(int crtFolder) {
-        // List.copyOf(folderTree.get(crtFolder));
-
         if (folderTree.containsKey(crtFolder)) {
             crtFolderList.clear(false);
 
@@ -97,11 +98,8 @@ public class LibraryViewModel extends AndroidViewModel {
     }
 
     public void updateCrtBookmarkList(int crtFolder) {
-
+        crtBookmarkList.clear(false);
         if(bookmarkTree.containsKey(crtFolder)) {
-            crtBookmarkList.clear(false);
-            //crtBookmarkList.addAll(new ArrayList<>(bookmarkTree.get(crtFolder)));
-
             List<Integer> list = new ArrayList<>(bookmarkTree.get(crtFolder));
             List<SongCellData> dataList = new ArrayList<>();
             for (int songNum : list) {
@@ -115,14 +113,6 @@ public class LibraryViewModel extends AndroidViewModel {
             }
             crtBookmarkList.addAll(sorted);
         }
-
-    }
-
-    public void updateItemList(int folder) {
-        executor.execute(() -> {
-            updateCrtFolderList(folder);
-            updateCrtBookmarkList(folder);
-        });
     }
 
     public void createFolderTree(List<Integer> folderList) {
@@ -130,7 +120,14 @@ public class LibraryViewModel extends AndroidViewModel {
         folderTree.clear();
 
         for (Integer folder : folderList) {
+
             int parent = folderDataMap.get(folder).getParent();
+
+            bookmarkTree.put(folder, new HashSet<>());
+            if(!folderTree.containsKey(folder)) {
+                folderTree.put(folder, new HashSet<>());
+            }
+
 
             if (folderTree.containsKey(parent)) {
                 folderTree.get(parent).add(folder);
@@ -160,7 +157,13 @@ public class LibraryViewModel extends AndroidViewModel {
     }
 
     public void moveFolder(int folder) {
-        libraryRepository.setFolder(folder);
+        if(folder == 0) {
+            libraryRepository.setFolder(0);
+            libraryRepository.setParentFolder(-1);
+        } else {
+            libraryRepository.setFolder(folder);
+            libraryRepository.setParentFolder(folderDataMap.get(folder).getParent());
+        }
     }
 
     public Map<Integer, SongCellData> getSongDataMap() {
@@ -199,5 +202,9 @@ public class LibraryViewModel extends AndroidViewModel {
 
     public ListLiveData<Integer> getCrtBookmarkList() {
         return crtBookmarkList;
+    }
+
+    public LiveData<Integer> getParentFolder() {
+        return parentFolder;
     }
 }

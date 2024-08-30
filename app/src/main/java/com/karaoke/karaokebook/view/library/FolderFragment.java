@@ -3,6 +3,7 @@ package com.karaoke.karaokebook.view.library;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.karaoke.karaokebook.data.cell.FolderCellData;
 import com.karaoke.karaokebook.databinding.FragmentFolderBinding;
 import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
 import com.karaoke.karaokebook.viewModel.LibraryViewModel;
@@ -38,13 +40,23 @@ public class FolderFragment extends Fragment {
             new FolderNameDialog(getContext());
         });
 
+        binding.setParent(libraryViewModel.getParentFolder());
+
+        binding.setLifecycleOwner(getViewLifecycleOwner());
+
+        binding.goParentFolderView.setOnClickListener((view) -> {
+            libraryViewModel.moveFolder(libraryViewModel.getParentFolder().getValue());
+        });
+
         RecyclerView recyclerView = binding.folderChildView;
+        FolderAdapter.setOnFolderClickListener(data -> libraryViewModel.moveFolder(data.getId()));
         FolderAdapter adapter = new FolderAdapter(libraryViewModel.getFolderDataMap(), libraryViewModel.getSongDataMap(), libraryViewModel.getFolderTree(), libraryViewModel.getBookmarkTree());
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         libraryViewModel.getCrtFolder().observe(getViewLifecycleOwner(), folder -> {
+            Log.e("TEST", String.valueOf(folder));
             libraryViewModel.updateItemList(folder);
         });
 

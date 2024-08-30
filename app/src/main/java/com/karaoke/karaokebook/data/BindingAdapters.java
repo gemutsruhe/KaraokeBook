@@ -30,9 +30,24 @@ public class BindingAdapters {
         }
     }
 
-    @BindingAdapter("app:childNum")
-    public static void setChildNum(TextView textView, Set<Integer> child) {
-        if(child == null) textView.setText("0");
-        else textView.setText(String.valueOf(child.size()));
+    @BindingAdapter("app:childFolderNum")
+    public static void setChildFolderNum(TextView textView, Set<Integer> childFolder) {
+        if(!(childFolder == null)) textView.setText(childFolder.size() + " 폴더");
+        else textView.setText("0 폴더");
+    }
+
+    @BindingAdapter("app:childBookmarkNum")
+    public static void setChildBookmarkNum(TextView textView, Set<Integer> childBookmark) {
+        if(!(childBookmark == null)) textView.setText(childBookmark.size() + " 곡");
+        else textView.setText("0 곡");
+    }
+
+    @BindingAdapter("app:goParentFolderVisible")
+    public static void setGoParentFolderVisible(TextView textView, LiveData<Integer> parent) {
+        if(parent.getValue() == -1) {
+            textView.setVisibility(TextView.GONE);
+        } else {
+            textView.setVisibility(TextView.VISIBLE);
+        }
     }
 }

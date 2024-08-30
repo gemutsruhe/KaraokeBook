@@ -16,6 +16,7 @@ public class LibraryRepository {
     private static LibraryRepository instance;
     private final Map<Integer, FolderCellData> folderDataMap;
 
+    private final MutableLiveData<Integer> parentFolder;
     private final MutableLiveData<Integer> crtFolder;
 
     private final Map<Integer, Set<Integer>> folderTree;
@@ -29,6 +30,8 @@ public class LibraryRepository {
 
     private LibraryRepository() {
         folderDataMap = new HashMap<>();
+
+        parentFolder = new MutableLiveData<>(-1);
         crtFolder = new MutableLiveData<>(0);
 
         folderList = new ListLiveData<>();
@@ -83,6 +86,14 @@ public class LibraryRepository {
 
     public ListLiveData<Integer> getCrtBookmarkList() {
         return crtBookmarkList;
+    }
+
+    public LiveData<Integer> getParentFolder() {
+        return parentFolder;
+    }
+
+    public void setParentFolder(int parent) {
+        this.parentFolder.postValue(parent);
     }
 
     public void setBookmarkList(List<Integer> bookmarkList) {

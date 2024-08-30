@@ -1,37 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
-
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="parent"
+            type="androidx.lifecycle.LiveData&lt;java.lang.Integer&gt;" />
+    </data>
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:orientation="horizontal">
-
-
-        <Button
-            android:id="@+id/addFolderButton"
-            android:layout_width="wrap_content"
-            android:text="폴더추가"
-            style="@style/MenuButtonTheme"
-            app:backgroundTint="@null"/>
-
-
-        <Button
-            android:id="@+id/deleteFolderButton"
-            android:layout_width="wrap_content"
-            android:text="폴더삭제"
-            style="@style/MenuButtonTheme"
-            app:backgroundTint="@null"/>
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/folderChildView"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:orientation="horizontal">
 
 
-</LinearLayout>
+            <Button
+                android:id="@+id/addFolderButton"
+                android:layout_width="wrap_content"
+                android:text="폴더추가"
+                style="@style/MenuButtonTheme"
+                app:backgroundTint="@null"/>
+
+
+            <Button
+                android:id="@+id/deleteFolderButton"
+                android:layout_width="wrap_content"
+                android:text="폴더삭제"
+                style="@style/MenuButtonTheme"
+                app:backgroundTint="@null"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/goParentFolderView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="상위폴더로"
+            android:padding="8dp"
+            android:textAlignment="center"
+            app:goParentFolderVisible="@{parent}"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/folderChildView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+</layout>
