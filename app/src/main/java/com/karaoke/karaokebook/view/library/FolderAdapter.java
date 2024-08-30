@@ -126,4 +126,8 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public static void setOnFolderClickListener(FolderAdapter.OnFolderClickListener listener) {
         FolderAdapter.listener = listener;
     }
+
+    public int getCrtFolderCount() {
+        return crtFolderList.size();
+    }
 }

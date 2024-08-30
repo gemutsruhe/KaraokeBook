@@ -1,10 +1,13 @@
 package com.karaoke.karaokebook.view.library;
 
 import android.graphics.Canvas;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.karaoke.karaokebook.R;
 
 public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
 
@@ -16,6 +19,7 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     private int preSwipeDirection = SWIPE_NOT;
     private int swipeDirection = SWIPE_NOT;
     private RecyclerView.ViewHolder prevViewHolder;
+    private View swipedView;
 
     public FolderTouchHelperCallback(FolderAdapter adapter) {
         this.adapter = adapter;
@@ -24,7 +28,12 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
         swipeDirection = preSwipeDirection;
-        prevViewHolder = viewHolder;
+        //prevViewHolder = viewHolder;
+        if(viewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
+            swipedView = viewHolder.itemView.findViewById(R.id.folderDataLayout);
+        } else {
+            swipedView = viewHolder.itemView.findViewById(R.id.bookmarkDataLayout);
+        }
         return 2.0f;
     }
 
@@ -68,7 +77,8 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (prevViewHolder != null && prevViewHolder.getAdapterPosition() != viewHolder.getAdapterPosition()) {
-                prevViewHolder.itemView.setTranslationX(0);
+                //prevViewHolder.itemView.setTranslationX(0);
+                swipedView.setTranslationX(0);
                 swipeDirection = SWIPE_NOT;
                 preSwipeDirection = SWIPE_NOT;
             }
@@ -78,12 +88,21 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
 
             float maxDistance = width * MAX_SWIPE_DISTANCE;
 
-            if (isCurrentlyActive) {
-                float translationX;
+            View swipeView;
+            if(viewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
+                swipeView = viewHolder.itemView.findViewById(R.id.folderDataLayout);
+            } else {
+                swipeView = viewHolder.itemView.findViewById(R.id.bookmarkDataLayout);
+            }
 
+
+            float translationX;
+
+            if (isCurrentlyActive) {
                 if (swipeDirection == SWIPE_NOT) {
                     translationX = Math.min(Math.abs(dX), maxDistance);
                     if (dX < 0) translationX *= -1;
+
                     if (dX < -maxDistance) {
                         preSwipeDirection = SWIPE_LEFT;
                     } else if (dX > maxDistance) {
@@ -92,6 +111,9 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
                         preSwipeDirection = SWIPE_NOT;
                     }
                 } else {
+                    translationX = Math.min(Math.abs(swipeDirection * maxDistance + dX), maxDistance);
+                    if (swipeDirection * maxDistance + dX < 0) translationX *= -1;
+
                     if (dX < -maxDistance * 2) {
                         preSwipeDirection = SWIPE_LEFT;
                     } else if (dX > maxDistance * 2) {
@@ -99,19 +121,19 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
                     } else if (Math.abs(dX) > maxDistance / 2) {
                         preSwipeDirection = SWIPE_NOT;
                     }
-                    translationX = Math.min(Math.abs(swipeDirection * maxDistance + dX), maxDistance);
-                    if (swipeDirection * maxDistance + dX < 0) translationX *= -1;
                 }
-                viewHolder.itemView.setTranslationX(translationX);
+
             } else {
-                if (swipeDirection == SWIPE_NOT) {
-                    viewHolder.itemView.setTranslationX(0);
-                } else if (swipeDirection == SWIPE_LEFT) {
-                    viewHolder.itemView.setTranslationX(-maxDistance);
+                if (swipeDirection == SWIPE_LEFT) {
+                    translationX = -maxDistance;
                 } else if (swipeDirection == SWIPE_RIGHT) {
-                    viewHolder.itemView.setTranslationX(maxDistance);
+                    translationX = maxDistance;
+                } else {
+                    translationX = 0;
                 }
             }
+
+            swipeView.setTranslationX(translationX);
         } else {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
