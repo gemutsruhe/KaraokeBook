@@ -1,8 +1,6 @@
 package com.karaoke.karaokebook.view.library;
 
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -14,7 +12,6 @@ import com.karaoke.karaokebook.databinding.CellBookmarkBinding;
 import com.karaoke.karaokebook.databinding.CellFolderBinding;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,7 +48,7 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == VIEW_TYPE_FOLDER) {
+        if (viewType == VIEW_TYPE_FOLDER) {
             CellFolderBinding binding = CellFolderBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
             return new FolderViewHolder(binding);
         } else {
@@ -62,7 +59,7 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if(holder instanceof FolderViewHolder) {
+        if (holder instanceof FolderViewHolder) {
             int folderId = crtFolderList.get(position);
 
             ((FolderViewHolder) holder).bind(folderDataMap.get(folderId), folderTree.get(folderId), bookmarkTree.get(folderId));
@@ -75,13 +72,12 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        Log.e("TEST", crtFolderList.size() + " " + crtBookmarkList.size());
         return crtFolderList.size() + crtBookmarkList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(position < crtFolderList.size()) {
+        if (position < crtFolderList.size()) {
             return VIEW_TYPE_FOLDER;
         } else {
             return VIEW_TYPE_BOOKMARK;
@@ -90,6 +86,7 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public static class FolderViewHolder extends RecyclerView.ViewHolder {
         CellFolderBinding binding;
+
         public FolderViewHolder(CellFolderBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
@@ -100,15 +97,12 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             binding.setChildFolder(childFolder);
             binding.setChildBookmark(childBookmark);
             binding.getRoot().setOnClickListener(view -> listener.onFolderClick(data));
-            //if(child == null) child = new HashSet<>();
-            //binding.setChild(child);
-            /*if(child == null) binding.setChild(0);
-            else binding.setChild(child.size());*/
         }
     }
 
     public static class BookmarkViewHolder extends RecyclerView.ViewHolder {
         CellBookmarkBinding binding;
+
         public BookmarkViewHolder(CellBookmarkBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
