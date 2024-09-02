@@ -116,4 +116,11 @@ public class DatabaseViewModel extends AndroidViewModel {
             getDBBookmarkList();
         });
     }
+
+    public void moveFolder(int child, int parent) {
+        executor.execute(() -> {
+            appDatabase.folderDao().updateFolder(child, parent);
+            getDBFolderList();
+        });
+    }
 }

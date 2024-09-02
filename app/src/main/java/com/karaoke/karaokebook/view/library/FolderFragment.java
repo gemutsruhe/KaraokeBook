@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.databinding.FragmentFolderBinding;
 import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
 import com.karaoke.karaokebook.viewModel.LibraryViewModel;
@@ -47,38 +46,39 @@ public class FolderFragment extends Fragment {
         binding.setLifecycleOwner(getViewLifecycleOwner());
 
         binding.goParentFolderView.setOnClickListener((view) -> {
+            callback.resetSelect();
             libraryViewModel.moveFolder(libraryViewModel.getParentFolder().getValue());
         });
 
         RecyclerView recyclerView = binding.folderChildView;
         FolderAdapter.setOnFolderClickListener(data -> libraryViewModel.moveFolder(data.getId()));
 
-        adapter = new FolderAdapter(libraryViewModel.getFolderDataMap(), libraryViewModel.getSongDataMap(), libraryViewModel.getFolderTree(), libraryViewModel.getBookmarkTree(), new FolderAdapter.OnDeleteBookmarkClickListener() {
-            @Override
-            public void onDeleteButtonClick(SongCellData data) {
-                databaseViewModel.deleteBookmark(data);
-                callback.deleteItem();
-            }
-        });
+
+        adapter = new FolderAdapter(databaseViewModel, libraryViewModel);
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        callback = new FolderTouchHelperCallback(adapter);
+        callback = new FolderTouchHelperCallback(adapter, databaseViewModel, libraryViewModel);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        libraryViewModel.getCrtFolder().observe(getViewLifecycleOwner(), folder -> {
-            libraryViewModel.updateItemList(folder);
-        });
+        adapter.setTouchHelperCallback(callback);
 
-        libraryViewModel.getCrtFolderList().observe(getViewLifecycleOwner(), adapter::setCrtFolderList);
+        libraryViewModel.getCrtFolder().observe(getViewLifecycleOwner(), folder -> libraryViewModel.updateItemList(folder));
 
-        libraryViewModel.getCrtBookmarkList().observe(getViewLifecycleOwner(), adapter::setCrtBookmarkList);
+        libraryViewModel.getCrtFolderList().observe(getViewLifecycleOwner(), crtFolderList -> adapter.setCrtFolderList(crtFolderList));
+
+        libraryViewModel.getCrtBookmarkList().observe(getViewLifecycleOwner(), crtBookmarkList -> adapter.setCrtBookmarkList(crtBookmarkList));
 
         databaseViewModel.getDBFolderList();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
     }
 
     private class FolderNameDialog extends AlertDialog.Builder {
@@ -102,10 +102,5 @@ public class FolderFragment extends Fragment {
 
             this.show();
         }
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
     }
 }

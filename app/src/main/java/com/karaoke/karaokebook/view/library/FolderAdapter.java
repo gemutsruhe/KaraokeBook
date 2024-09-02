@@ -11,47 +11,44 @@ import com.karaoke.karaokebook.data.cell.FolderCellData;
 import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.databinding.CellBookmarkBinding;
 import com.karaoke.karaokebook.databinding.CellFolderBinding;
+import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
+import com.karaoke.karaokebook.viewModel.LibraryViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
+    private static FolderAdapter.OnFolderClickListener listener;
     private final int VIEW_TYPE_FOLDER = 1;
     private final int VIEW_TYPE_BOOKMARK = 2;
-
     private final Map<Integer, FolderCellData> folderDataMap;
     private final Map<Integer, SongCellData> songDataMap;
-
     private final Map<Integer, Set<Integer>> folderTree;
     private final Map<Integer, Set<Integer>> bookmarkTree;
-
+    //private final OnDeleteBookmarkClickListener deleteBookmarkListener;
     private List<Integer> crtFolderList;
     private List<Integer> crtBookmarkList;
+    private final LibraryViewModel libraryViewModel;
+    private final DatabaseViewModel databaseViewModel;
+    FolderTouchHelperCallback touchHelperCallback;
 
-    public interface OnFolderClickListener {
-        void onFolderClick(FolderCellData data);
-    }
-
-    private final OnDeleteBookmarkClickListener deleteBookmarkListener;
-
-    public interface OnDeleteBookmarkClickListener {
-        void onDeleteButtonClick(SongCellData data);
-    }
-
-    private static FolderAdapter.OnFolderClickListener listener;
-
-    public FolderAdapter(Map<Integer, FolderCellData> folderDataMap, Map<Integer, SongCellData> songDataMap, Map<Integer, Set<Integer>> folderTree, Map<Integer, Set<Integer>> bookmarkTree, OnDeleteBookmarkClickListener deleteBookmarkListener) {
-        this.folderDataMap = folderDataMap;
-        this.songDataMap = songDataMap;
-        this.folderTree = folderTree;
-        this.bookmarkTree = bookmarkTree;
+    public FolderAdapter(DatabaseViewModel databaseViewModel, LibraryViewModel libraryViewModel) {
+        this.libraryViewModel = libraryViewModel;
+        this.databaseViewModel = databaseViewModel;
+        this.folderDataMap = libraryViewModel.getFolderDataMap();
+        this.songDataMap = libraryViewModel.getSongDataMap();
+        this.folderTree = libraryViewModel.getFolderTree();
+        this.bookmarkTree = libraryViewModel.getBookmarkTree();
         this.crtFolderList = new ArrayList<>();
         this.crtBookmarkList = new ArrayList<>();
-        this.deleteBookmarkListener = deleteBookmarkListener;
+    }
 
+    public static void setOnFolderClickListener(FolderAdapter.OnFolderClickListener listener) {
+        FolderAdapter.listener = listener;
     }
 
     @NonNull
@@ -75,13 +72,12 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         } else if (holder instanceof BookmarkViewHolder) {
             int bookmarkId = crtBookmarkList.get(position - crtFolderList.size());
 
-            ((BookmarkViewHolder) holder).bind(songDataMap.get(bookmarkId), deleteBookmarkListener);
+            ((BookmarkViewHolder) holder).bind(songDataMap.get(bookmarkId), databaseViewModel, touchHelperCallback);
         }
     }
 
     @Override
     public int getItemCount() {
-        Log.e("TEST", crtFolderList.size() + " " + crtBookmarkList.size());
         return crtFolderList.size() + crtBookmarkList.size();
     }
 
@@ -92,6 +88,24 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         } else {
             return VIEW_TYPE_BOOKMARK;
         }
+    }
+
+    public void setCrtFolderList(List<Integer> crtFolderList) {
+        this.crtFolderList = crtFolderList;
+        notifyDataSetChanged();
+    }
+
+    public void setCrtBookmarkList(List<Integer> crtBookmarkList) {
+        this.crtBookmarkList = crtBookmarkList;
+        notifyDataSetChanged();
+    }
+
+    public int getCrtFolderCount() {
+        return crtFolderList.size();
+    }
+
+    public interface OnFolderClickListener {
+        void onFolderClick(FolderCellData data);
     }
 
     public static class FolderViewHolder extends RecyclerView.ViewHolder {
@@ -118,27 +132,34 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             this.binding = binding;
         }
 
-        public void bind(SongCellData data, OnDeleteBookmarkClickListener deleteBookmarkListener) {
+        public void bind(SongCellData data, DatabaseViewModel databaseViewModel, FolderTouchHelperCallback touchHelperCallback) {
             binding.setData(data);
-            binding.deleteBookmarkButton.setOnClickListener(view -> deleteBookmarkListener.onDeleteButtonClick(data));
+            binding.deleteBookmarkButton.setOnClickListener(view -> {
+                databaseViewModel.deleteBookmark(data);
+                touchHelperCallback.resetSelect();
+            });
         }
     }
 
-    public void setCrtFolderList(List<Integer> crtFolderList) {
-        this.crtFolderList = crtFolderList;
-        notifyDataSetChanged();
+    public void setTouchHelperCallback(FolderTouchHelperCallback callback) {
+        this.touchHelperCallback = callback;
     }
 
-    public void setCrtBookmarkList(List<Integer> crtBookmarkList) {
-        this.crtBookmarkList = crtBookmarkList;
-        notifyDataSetChanged();
+    public void moveFolder(int fromPosition, int toPosition) {
+        if(fromPosition == toPosition) return;
+
+        if(toPosition < crtFolderList.size()) {
+            if(fromPosition < crtFolderList.size()) {
+                Log.e("TEST", "moveFolder");
+                int childFolder = crtFolderList.get(fromPosition);
+                int parentFolder = crtFolderList.get(toPosition);
+                databaseViewModel.moveFolder(childFolder, parentFolder);
+
+            }
+        }
     }
 
-    public static void setOnFolderClickListener(FolderAdapter.OnFolderClickListener listener) {
-        FolderAdapter.listener = listener;
-    }
-
-    public int getCrtFolderCount() {
-        return crtFolderList.size();
+    public void changeItemPosition(int fromPosition, int toPosition) {
+        Collections.swap(crtBookmarkList, fromPosition, toPosition);
     }
 }

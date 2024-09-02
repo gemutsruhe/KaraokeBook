@@ -1,13 +1,17 @@
 package com.karaoke.karaokebook.view.library;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.karaoke.karaokebook.R;
+import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
+import com.karaoke.karaokebook.viewModel.LibraryViewModel;
 
 public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
 
@@ -19,9 +23,18 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     private int preSwipeDirection = SWIPE_NOT;
     private int swipeDirection = SWIPE_NOT;
     private RecyclerView.ViewHolder prevViewHolder;
+    private int scaled = 0;
+    private int currentActionState = ItemTouchHelper.ACTION_STATE_IDLE;
+    private final DatabaseViewModel databaseViewModel;
+    private final LibraryViewModel libraryViewModel;
 
-    public FolderTouchHelperCallback(FolderAdapter adapter) {
+    private int fromPosition;
+    private int toPosition;
+
+    public FolderTouchHelperCallback(FolderAdapter adapter, DatabaseViewModel databaseViewModel, LibraryViewModel libraryViewModel) {
         this.adapter = adapter;
+        this.databaseViewModel = databaseViewModel;
+        this.libraryViewModel = libraryViewModel;
     }
 
     @Override
@@ -60,8 +73,23 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
         int fromPosition = viewHolder.getAdapterPosition();
         int toPosition = target.getAdapterPosition();
 
+        if (fromPosition < adapter.getCrtFolderCount() || fromPosition >= adapter.getCrtFolderCount() && toPosition < adapter.getCrtFolderCount()) {
+            if(scaled == 0) {
+                scaled = 1;
+                viewHolder.itemView.setScaleX(0.8f);
+                viewHolder.itemView.setScaleY(0.8f);
+            }
+            this.fromPosition = fromPosition;
+            this.toPosition = toPosition;
+        } else {
+            adapter.changeItemPosition(fromPosition, toPosition);
+            adapter.notifyItemMoved(fromPosition, toPosition);
+        }
+
         return false;
     }
+
+
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
@@ -85,9 +113,8 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
             }
 
             float width = viewHolder.itemView.getWidth();
-            float MAX_SWIPE_DISTANCE = 0.2f;
 
-            float maxDistance = width * MAX_SWIPE_DISTANCE;
+            float maxDistance = width * SWIPE_DISTANCE;
 
             View swipeView;
             if (viewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
@@ -135,22 +162,47 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
             }
 
             swipeView.setTranslationX(translationX);
+        }
+        else if(actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         } else {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
     }
 
-    public void deleteItem() {
-        View view;
+    public void resetSelect() {
+        View view = null;
+        if(prevViewHolder == null) return;
         if (prevViewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
             view = prevViewHolder.itemView.findViewById(R.id.folderDataLayout);
         } else {
             view = prevViewHolder.itemView.findViewById(R.id.bookmarkDataLayout);
         }
         if (view != null) view.setTranslationX(0);
+
         swipeDirection = SWIPE_NOT;
         preSwipeDirection = SWIPE_NOT;
         prevViewHolder = null;
     }
 
+    @Override
+    public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
+        if(actionState == ItemTouchHelper.ACTION_STATE_IDLE) {
+            if(currentActionState == ItemTouchHelper.ACTION_STATE_DRAG && scaled == 1) {
+                adapter.moveFolder(fromPosition, toPosition);
+
+                prevViewHolder.itemView.setScaleX(1.0f);
+                prevViewHolder.itemView.setScaleY(1.0f);
+                scaled = 0;
+            }
+        } else {
+            if(actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+                prevViewHolder = viewHolder;
+            }
+        }
+        //prevViewHolder = viewHolder;
+        currentActionState = actionState;
+
+        super.onSelectedChanged(viewHolder, actionState);
+    }
 }
