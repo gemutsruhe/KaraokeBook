@@ -1,5 +1,6 @@
 package com.karaoke.karaokebook.view.library;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -34,15 +35,23 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         void onFolderClick(FolderCellData data);
     }
 
+    private final OnDeleteBookmarkClickListener deleteBookmarkListener;
+
+    public interface OnDeleteBookmarkClickListener {
+        void onDeleteButtonClick(SongCellData data);
+    }
+
     private static FolderAdapter.OnFolderClickListener listener;
 
-    public FolderAdapter(Map<Integer, FolderCellData> folderDataMap, Map<Integer, SongCellData> songDataMap, Map<Integer, Set<Integer>> folderTree, Map<Integer, Set<Integer>> bookmarkTree) {
+    public FolderAdapter(Map<Integer, FolderCellData> folderDataMap, Map<Integer, SongCellData> songDataMap, Map<Integer, Set<Integer>> folderTree, Map<Integer, Set<Integer>> bookmarkTree, OnDeleteBookmarkClickListener deleteBookmarkListener) {
         this.folderDataMap = folderDataMap;
         this.songDataMap = songDataMap;
         this.folderTree = folderTree;
         this.bookmarkTree = bookmarkTree;
         this.crtFolderList = new ArrayList<>();
         this.crtBookmarkList = new ArrayList<>();
+        this.deleteBookmarkListener = deleteBookmarkListener;
+
     }
 
     @NonNull
@@ -66,12 +75,13 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         } else if (holder instanceof BookmarkViewHolder) {
             int bookmarkId = crtBookmarkList.get(position - crtFolderList.size());
 
-            ((BookmarkViewHolder) holder).bind(songDataMap.get(bookmarkId));
+            ((BookmarkViewHolder) holder).bind(songDataMap.get(bookmarkId), deleteBookmarkListener);
         }
     }
 
     @Override
     public int getItemCount() {
+        Log.e("TEST", crtFolderList.size() + " " + crtBookmarkList.size());
         return crtFolderList.size() + crtBookmarkList.size();
     }
 
@@ -108,8 +118,9 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             this.binding = binding;
         }
 
-        public void bind(SongCellData data) {
+        public void bind(SongCellData data, OnDeleteBookmarkClickListener deleteBookmarkListener) {
             binding.setData(data);
+            binding.deleteBookmarkButton.setOnClickListener(view -> deleteBookmarkListener.onDeleteButtonClick(data));
         }
     }
 

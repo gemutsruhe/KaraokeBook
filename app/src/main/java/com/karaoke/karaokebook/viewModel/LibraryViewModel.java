@@ -9,13 +9,11 @@ import androidx.lifecycle.LiveData;
 import com.karaoke.karaokebook.data.cell.FolderCellData;
 import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.data.local.AppDatabase;
-import com.karaoke.karaokebook.data.model.Folder;
 import com.karaoke.karaokebook.data.model.ListLiveData;
 import com.karaoke.karaokebook.data.repository.LibraryRepository;
 import com.karaoke.karaokebook.data.repository.SongRepository;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -116,11 +114,9 @@ public class LibraryViewModel extends AndroidViewModel {
     }
 
     public void createFolderTree(List<Integer> folderList) {
-        Map<Integer, Set<Integer>> folderTree = libraryRepository.getFolderTree();
         folderTree.clear();
 
         for (Integer folder : folderList) {
-
             int parent = folderDataMap.get(folder).getParent();
 
             bookmarkTree.put(folder, new HashSet<>());
@@ -128,29 +124,24 @@ public class LibraryViewModel extends AndroidViewModel {
                 folderTree.put(folder, new HashSet<>());
             }
 
-
-            if (folderTree.containsKey(parent)) {
-                folderTree.get(parent).add(folder);
-            } else {
+            if (!folderTree.containsKey(parent)) {
                 folderTree.put(parent, new HashSet<>());
             }
+            folderTree.get(parent).add(folder);
         }
 
         updateCrtFolderList(crtFolder.getValue());
     }
 
     public void createBookmarkTree(List<Integer> bookmarkList) {
-        Map<Integer, Set<Integer>> bookmarkTree = libraryRepository.getBookmarkTree();
         bookmarkTree.clear();
-
         for (Integer bookmark : bookmarkList) {
             int parent = songDataMap.get(bookmark).getParent();
 
-            if (bookmarkTree.containsKey(parent)) {
-                bookmarkTree.get(parent).add(bookmark);
-            } else {
+            if (!bookmarkTree.containsKey(parent)) {
                 bookmarkTree.put(parent, new HashSet<>());
             }
+            bookmarkTree.get(parent).add(bookmark);
         }
 
         updateCrtBookmarkList(crtFolder.getValue());

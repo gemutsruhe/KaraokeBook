@@ -3,7 +3,6 @@ package com.karaoke.karaokebook.view.library;
 import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.karaoke.karaokebook.data.cell.FolderCellData;
+import com.karaoke.karaokebook.data.cell.SongCellData;
 import com.karaoke.karaokebook.databinding.FragmentFolderBinding;
 import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
 import com.karaoke.karaokebook.viewModel.LibraryViewModel;
@@ -27,6 +26,8 @@ public class FolderFragment extends Fragment {
     FragmentFolderBinding binding;
     DatabaseViewModel databaseViewModel;
     LibraryViewModel libraryViewModel;
+    FolderAdapter adapter;
+    FolderTouchHelperCallback callback;
 
     @Nullable
     @Override
@@ -51,17 +52,23 @@ public class FolderFragment extends Fragment {
 
         RecyclerView recyclerView = binding.folderChildView;
         FolderAdapter.setOnFolderClickListener(data -> libraryViewModel.moveFolder(data.getId()));
-        FolderAdapter adapter = new FolderAdapter(libraryViewModel.getFolderDataMap(), libraryViewModel.getSongDataMap(), libraryViewModel.getFolderTree(), libraryViewModel.getBookmarkTree());
+
+        adapter = new FolderAdapter(libraryViewModel.getFolderDataMap(), libraryViewModel.getSongDataMap(), libraryViewModel.getFolderTree(), libraryViewModel.getBookmarkTree(), new FolderAdapter.OnDeleteBookmarkClickListener() {
+            @Override
+            public void onDeleteButtonClick(SongCellData data) {
+                databaseViewModel.deleteBookmark(data);
+                callback.deleteItem();
+            }
+        });
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        ItemTouchHelper.Callback callback = new FolderTouchHelperCallback(adapter);
+        callback = new FolderTouchHelperCallback(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         libraryViewModel.getCrtFolder().observe(getViewLifecycleOwner(), folder -> {
-            Log.e("TEST", String.valueOf(folder));
             libraryViewModel.updateItemList(folder);
         });
 

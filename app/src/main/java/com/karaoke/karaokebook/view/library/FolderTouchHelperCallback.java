@@ -72,11 +72,14 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (prevViewHolder != null && prevViewHolder.getAdapterPosition() != viewHolder.getAdapterPosition()) {
-                if(prevViewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
-                    prevViewHolder.itemView.findViewById(R.id.folderDataLayout).setTranslationX(0);
+                View view;
+
+                if (prevViewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
+                    view = prevViewHolder.itemView.findViewById(R.id.folderDataLayout);
                 } else {
-                    prevViewHolder.itemView.findViewById(R.id.bookmarkDataLayout).setTranslationX(0);
+                    view = prevViewHolder.itemView.findViewById(R.id.bookmarkDataLayout);
                 }
+                if (view != null) view.setTranslationX(0);
                 swipeDirection = SWIPE_NOT;
                 preSwipeDirection = SWIPE_NOT;
             }
@@ -87,7 +90,7 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
             float maxDistance = width * MAX_SWIPE_DISTANCE;
 
             View swipeView;
-            if(viewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
+            if (viewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
                 swipeView = viewHolder.itemView.findViewById(R.id.folderDataLayout);
             } else {
                 swipeView = viewHolder.itemView.findViewById(R.id.bookmarkDataLayout);
@@ -135,6 +138,19 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
         } else {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         }
+    }
+
+    public void deleteItem() {
+        View view;
+        if (prevViewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
+            view = prevViewHolder.itemView.findViewById(R.id.folderDataLayout);
+        } else {
+            view = prevViewHolder.itemView.findViewById(R.id.bookmarkDataLayout);
+        }
+        if (view != null) view.setTranslationX(0);
+        swipeDirection = SWIPE_NOT;
+        preSwipeDirection = SWIPE_NOT;
+        prevViewHolder = null;
     }
 
 }

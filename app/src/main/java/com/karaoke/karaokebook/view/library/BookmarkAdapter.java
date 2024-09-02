@@ -1,7 +1,6 @@
 package com.karaoke.karaokebook.view.library;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -15,10 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHolder>{
+public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHolder> {
 
     private final Map<Integer, SongCellData> songDataMap;
     private List<Integer> bookmarkList;
+
 
     public BookmarkAdapter(Map<Integer, SongCellData> songDataMap) {
         this.songDataMap = songDataMap;
@@ -46,11 +46,13 @@ public class BookmarkAdapter extends RecyclerView.Adapter<BookmarkAdapter.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         CellBookmarkBinding binding;
+
         public ViewHolder(CellBookmarkBinding binding) {
             super(binding.getRoot());
             this.binding = binding;
         }
 
+        @SuppressLint("ClickableViewAccessibility")
         public void bind(SongCellData data) {
             binding.setData(data);
         }
