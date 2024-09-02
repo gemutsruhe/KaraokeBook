@@ -19,7 +19,6 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     private int preSwipeDirection = SWIPE_NOT;
     private int swipeDirection = SWIPE_NOT;
     private RecyclerView.ViewHolder prevViewHolder;
-    private View swipedView;
 
     public FolderTouchHelperCallback(FolderAdapter adapter) {
         this.adapter = adapter;
@@ -28,12 +27,8 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     @Override
     public float getSwipeThreshold(@NonNull RecyclerView.ViewHolder viewHolder) {
         swipeDirection = preSwipeDirection;
-        //prevViewHolder = viewHolder;
-        if(viewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
-            swipedView = viewHolder.itemView.findViewById(R.id.folderDataLayout);
-        } else {
-            swipedView = viewHolder.itemView.findViewById(R.id.bookmarkDataLayout);
-        }
+        prevViewHolder = viewHolder;
+
         return 2.0f;
     }
 
@@ -77,8 +72,11 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
         if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
             if (prevViewHolder != null && prevViewHolder.getAdapterPosition() != viewHolder.getAdapterPosition()) {
-                //prevViewHolder.itemView.setTranslationX(0);
-                swipedView.setTranslationX(0);
+                if(prevViewHolder.getAdapterPosition() < adapter.getCrtFolderCount()) {
+                    prevViewHolder.itemView.findViewById(R.id.folderDataLayout).setTranslationX(0);
+                } else {
+                    prevViewHolder.itemView.findViewById(R.id.bookmarkDataLayout).setTranslationX(0);
+                }
                 swipeDirection = SWIPE_NOT;
                 preSwipeDirection = SWIPE_NOT;
             }
