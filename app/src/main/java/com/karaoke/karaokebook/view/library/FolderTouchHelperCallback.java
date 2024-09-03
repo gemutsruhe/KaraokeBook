@@ -13,6 +13,8 @@ import com.karaoke.karaokebook.R;
 import com.karaoke.karaokebook.viewModel.DatabaseViewModel;
 import com.karaoke.karaokebook.viewModel.LibraryViewModel;
 
+import java.util.List;
+
 public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final FolderAdapter adapter;
@@ -27,6 +29,10 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     private int currentActionState = ItemTouchHelper.ACTION_STATE_IDLE;
     private final DatabaseViewModel databaseViewModel;
     private final LibraryViewModel libraryViewModel;
+
+    private int topBoundary;
+    private int bottomBoundary;
+    private int crtPosition;
 
     private int fromPosition;
     private int toPosition;
@@ -72,19 +78,22 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         int fromPosition = viewHolder.getAdapterPosition();
         int toPosition = target.getAdapterPosition();
-
+        /*Log.e("TEST", "onMove");
+        Log.e("TEST", viewHolder.itemView.getTop() + " " + viewHolder.itemView.getBottom());
+        Log.e("TEST", target.itemView.getTop() + " " + target.itemView.getBottom());*/
+        //Log.e("TEST", fromPosition + " " + toPosition);
         if (fromPosition < adapter.getCrtFolderCount() || fromPosition >= adapter.getCrtFolderCount() && toPosition < adapter.getCrtFolderCount()) {
             if(scaled == 0) {
-                scaled = 1;
-                viewHolder.itemView.setScaleX(0.8f);
-                viewHolder.itemView.setScaleY(0.8f);
+
             }
-            this.fromPosition = fromPosition;
-            this.toPosition = toPosition;
         } else {
+
             adapter.changeItemPosition(fromPosition, toPosition);
             adapter.notifyItemMoved(fromPosition, toPosition);
         }
+
+        this.fromPosition = fromPosition;
+        this.toPosition = toPosition;
 
         return false;
     }
@@ -164,6 +173,38 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
             swipeView.setTranslationX(translationX);
         }
         else if(actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
+            if(viewHolder.itemView.getY() + viewHolder.itemView.getHeight() / 2 < topBoundary) {
+                if(crtPosition > 0) crtPosition--;
+                if(crtPosition < adapter.getCrtFolderCount()) {
+                    scaled = 1;
+                    viewHolder.itemView.setScaleX(0.8f);
+                    viewHolder.itemView.setScaleY(0.8f);
+                }
+                View view = recyclerView.getChildAt(crtPosition);
+                topBoundary = view.getTop();
+                bottomBoundary = view.getBottom();
+            } else if(viewHolder.itemView.getY() + viewHolder.itemView.getHeight() / 2 > bottomBoundary) {
+                if(crtPosition < recyclerView.getChildCount() - 1) crtPosition++;
+                if(adapter.getCrtFolderCount() <= crtPosition) {
+                    scaled = 0;
+                    viewHolder.itemView.setScaleX(1.0f);
+                    viewHolder.itemView.setScaleY(1.0f);
+                }
+
+                View view = recyclerView.getChildAt(crtPosition);
+                if(view != null) {
+                    topBoundary = view.getTop();
+                    bottomBoundary = view.getBottom();
+                }
+
+            }
+
+            float limitTop = (float)recyclerView.getChildAt(0).getHeight() * (viewHolder.getAdapterPosition() + 0.25f);
+            if(dY < -limitTop) dY = -limitTop;
+
+            float limitBottom = (float)recyclerView.getChildAt(recyclerView.getChildCount() - 1).getHeight() / 2;
+            if(viewHolder.getAdapterPosition() == recyclerView.getChildCount() && dY > limitBottom) dY = limitBottom;
+
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
         } else {
             super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
@@ -189,7 +230,7 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         if(actionState == ItemTouchHelper.ACTION_STATE_IDLE) {
             if(currentActionState == ItemTouchHelper.ACTION_STATE_DRAG && scaled == 1) {
-                adapter.moveFolder(fromPosition, toPosition);
+                adapter.moveFolder(fromPosition, crtPosition);
 
                 prevViewHolder.itemView.setScaleX(1.0f);
                 prevViewHolder.itemView.setScaleY(1.0f);
@@ -198,11 +239,23 @@ public class FolderTouchHelperCallback extends ItemTouchHelper.Callback {
         } else {
             if(actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
                 prevViewHolder = viewHolder;
+                topBoundary = viewHolder.itemView.getTop();
+                bottomBoundary = viewHolder.itemView.getBottom();
+                crtPosition = viewHolder.getAdapterPosition();
             }
         }
         //prevViewHolder = viewHolder;
         currentActionState = actionState;
 
         super.onSelectedChanged(viewHolder, actionState);
+    }
+
+    @Override
+    public RecyclerView.ViewHolder chooseDropTarget(@NonNull RecyclerView.ViewHolder selected, @NonNull List<RecyclerView.ViewHolder> dropTargets, int curX, int curY) {
+        RecyclerView.ViewHolder viewHolder = super.chooseDropTarget(selected, dropTargets, curX, curY);
+
+        if(viewHolder != null) Log.e("TEST", "choose : " + viewHolder.getAdapterPosition());
+        //Log.e("TEST", "viewTop : " + topBoundary + " viewBottom : " + viewBottom + " curY : " + curY);
+        return super.chooseDropTarget(selected, dropTargets, curX, curY);
     }
 }

@@ -96,6 +96,7 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
     public void setCrtBookmarkList(List<Integer> crtBookmarkList) {
+        Log.e("TEST", String.valueOf(crtBookmarkList.size()));
         this.crtBookmarkList = crtBookmarkList;
         notifyDataSetChanged();
     }
@@ -154,12 +155,17 @@ public class FolderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 int childFolder = crtFolderList.get(fromPosition);
                 int parentFolder = crtFolderList.get(toPosition);
                 databaseViewModel.moveFolder(childFolder, parentFolder);
-
+            } else {
+                Log.e("TEST", "moveBookmark");
+                int childBookmark = crtBookmarkList.get(fromPosition - crtFolderList.size());
+                int parentFolder = crtFolderList.get(toPosition);
+                databaseViewModel.moveBookmark(childBookmark, parentFolder);
             }
         }
     }
 
     public void changeItemPosition(int fromPosition, int toPosition) {
+        if(crtBookmarkList.size() <= toPosition || crtBookmarkList.size() <= fromPosition) return ;
         Collections.swap(crtBookmarkList, fromPosition, toPosition);
     }
 }

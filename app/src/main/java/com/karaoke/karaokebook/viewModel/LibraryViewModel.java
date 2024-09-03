@@ -78,7 +78,7 @@ public class LibraryViewModel extends AndroidViewModel {
 
     public void updateCrtFolderList(int crtFolder) {
         if (folderTree.containsKey(crtFolder)) {
-            crtFolderList.clear(false);
+            crtFolderList.clear(true);
 
             List<Integer> list = new ArrayList<>(folderTree.get(crtFolder));
             List<FolderCellData> dataList = new ArrayList<>();
@@ -96,7 +96,7 @@ public class LibraryViewModel extends AndroidViewModel {
     }
 
     public void updateCrtBookmarkList(int crtFolder) {
-        crtBookmarkList.clear(false);
+        crtBookmarkList.clear(true);
         if(bookmarkTree.containsKey(crtFolder)) {
             List<Integer> list = new ArrayList<>(bookmarkTree.get(crtFolder));
             List<SongCellData> dataList = new ArrayList<>();

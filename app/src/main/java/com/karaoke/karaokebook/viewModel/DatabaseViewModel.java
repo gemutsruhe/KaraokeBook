@@ -119,8 +119,15 @@ public class DatabaseViewModel extends AndroidViewModel {
 
     public void moveFolder(int child, int parent) {
         executor.execute(() -> {
-            appDatabase.folderDao().updateFolder(child, parent);
+            appDatabase.folderDao().update(child, parent);
             getDBFolderList();
+        });
+    }
+
+    public void moveBookmark(int songNumber, int parentFolder) {
+        executor.execute(() -> {
+            appDatabase.bookmarkDao().update(songNumber, parentFolder);
+            getDBBookmarkList();
         });
     }
 }

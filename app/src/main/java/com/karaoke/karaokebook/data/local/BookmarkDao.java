@@ -25,4 +25,7 @@ public interface BookmarkDao {
 
     @Query("DELETE FROM bookmark WHERE number = :songNumber")
     void delete(int songNumber);
+
+    @Query("UPDATE bookmark SET parent = :parent WHERE number = :number")
+    void update(int number, int parent);
 }
