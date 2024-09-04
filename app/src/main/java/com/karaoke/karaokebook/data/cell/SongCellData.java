@@ -9,7 +9,7 @@ public class SongCellData implements CellData {
     private final int number;
     private final String title;
     private final String singer;
-    private final int pitch;
+    private int pitch;
     private final MutableLiveData<Boolean> bookmark = new MutableLiveData<>(false);
     private int parent;
 
@@ -74,5 +74,9 @@ public class SongCellData implements CellData {
 
     public int getParent() {
         return parent;
+    }
+
+    public void setPitch(int pitch) {
+        this.pitch = pitch;
     }
 }

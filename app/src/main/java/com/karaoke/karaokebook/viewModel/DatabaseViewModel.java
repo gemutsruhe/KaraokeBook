@@ -126,8 +126,37 @@ public class DatabaseViewModel extends AndroidViewModel {
 
     public void moveBookmark(int songNumber, int parentFolder) {
         executor.execute(() -> {
-            appDatabase.bookmarkDao().update(songNumber, parentFolder);
+            appDatabase.bookmarkDao().updateParent(songNumber, parentFolder);
             getDBBookmarkList();
+        });
+    }
+
+    public void setPitch(int songNumber, int newPitch) {
+        executor.execute(() -> {
+            appDatabase.bookmarkDao().setPitch(songNumber, newPitch);
+            //getUpdateSong(songNumber);
+            getDBBookmarkList();
+        });
+    }
+
+    public void increasePitch(int songNumber, int pitch) {
+        executor.execute(() -> {
+            appDatabase.bookmarkDao().setPitch(songNumber, pitch + 1);
+            getUpdateSong(songNumber);
+        });
+    }
+
+    public void decreasePitch(int songNumber, int pitch) {
+        executor.execute(() -> {
+            appDatabase.bookmarkDao().setPitch(songNumber, pitch - 1);
+            getUpdateSong(songNumber);
+        });
+    }
+
+    public void getUpdateSong(int songNumber) {
+        executor.execute(() -> {
+            Bookmark bookmark = appDatabase.bookmarkDao().getSong(songNumber);
+            songDataMap.put(songNumber, new SongCellData(bookmark));
         });
     }
 }

@@ -1,10 +1,13 @@
 package com.karaoke.karaokebook.view.library;
 
 import android.content.Context;
+import android.gesture.Gesture;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
@@ -54,8 +57,9 @@ public class FolderFragment extends Fragment {
         RecyclerView recyclerView = binding.folderChildView;
         FolderAdapter.setOnFolderClickListener(data -> libraryViewModel.moveFolder(data.getId()));
 
+        GestureDetector gestureDetector = new GestureDetector(this.getContext(), new GestureListener());
 
-        adapter = new FolderAdapter(databaseViewModel, libraryViewModel);
+        adapter = new FolderAdapter(databaseViewModel, libraryViewModel, getViewLifecycleOwner());
 
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -75,6 +79,22 @@ public class FolderFragment extends Fragment {
         databaseViewModel.getDBFolderList();
 
         return binding.getRoot();
+    }
+
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_THRESHOLD = 100;
+        private static final int SWIPE_VELOCITY_THRESHOLD = 100;
+
+        @Override
+        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            // 스크롤 동작 감지
+            if (distanceY > 0) {
+
+            } else if (distanceY < 0) {
+
+            }
+            return true;
+        }
     }
 
     @Override

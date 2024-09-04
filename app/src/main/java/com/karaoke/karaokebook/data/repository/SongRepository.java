@@ -35,6 +35,7 @@ public class SongRepository {
             songDataMap.put(data.getNumber(), data);
         } else {
             songDataMap.get(data.getNumber()).setParent(data.getParent());
+            songDataMap.get(data.getNumber()).setPitch(data.getPitch());
             songDataMap.get(data.getNumber()).setBookmark(true);
         }
     }

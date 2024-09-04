@@ -34,7 +34,7 @@ public class BookmarkFragment extends Fragment {
         databaseViewModel.getDBBookmarkList();
 
         RecyclerView recyclerView = binding.bookmarkListView;
-        BookmarkAdapter adapter = new BookmarkAdapter(libraryViewModel.getSongDataMap());
+        BookmarkAdapter adapter = new BookmarkAdapter(libraryViewModel.getSongDataMap(), databaseViewModel, getViewLifecycleOwner());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 

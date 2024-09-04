@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="pitch"
+            type="androidx.lifecycle.MutableLiveData&lt;java.lang.Integer&gt;" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <LinearLayout
+            android:id="@+id/changePitchLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.4"
+            app:layout_constraintWidth_percent="0.3">
+
+            <Button
+                android:id="@+id/decreasePitchButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="-1"
+                android:textColor="@color/black"
+                android:background="@null"
+                android:backgroundTint="@color/white"/>
+
+            <TextView
+                android:id="@+id/pitchLevel"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:songPitch="@{pitch}"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"/>
+
+            <Button
+                android:id="@+id/increasePitchButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="+1"
+                android:textColor="@color/black"
+                android:background="@null"
+                android:backgroundTint="@color/white" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.7"
+            app:layout_constraintWidth_percent="0.7"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/changePitchLayout">
+
+            <Button
+                android:id="@+id/cancelChangePitchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="취소"
+                android:textColor="@color/black"
+                android:backgroundTint="@color/white"
+                android:background="@null"/>
+
+            <Button
+                android:id="@+id/savePitchButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="변경"
+                android:textColor="@color/black"
+                android:background="@null"
+                android:backgroundTint="@color/white"/>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

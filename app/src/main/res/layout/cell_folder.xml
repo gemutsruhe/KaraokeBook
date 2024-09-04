@@ -21,7 +21,6 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -54,14 +53,14 @@
                     android:backgroundTint="@null"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
         <LinearLayout
             android:id="@+id/folderDataLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingHorizontal="8dp"
             android:paddingVertical="14dp"
-            android:background="@color/white" >
+            android:background="@color/white"
+            android:translationZ="1dp">
 
             <TextView
                 android:id="@+id/folderNameTextView"
@@ -95,6 +94,5 @@
                 app:childBookmarkNum="@{childBookmark}" />
 
         </LinearLayout>
-
     </FrameLayout>
 </layout>

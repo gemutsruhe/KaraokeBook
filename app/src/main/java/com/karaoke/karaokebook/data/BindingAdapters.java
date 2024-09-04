@@ -2,6 +2,7 @@ package com.karaoke.karaokebook.data;
 
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import androidx.databinding.BindingAdapter;
@@ -23,11 +24,8 @@ public class BindingAdapters {
     }
     @BindingAdapter("app:songPitch")
     public static void setSongPitch(TextView textView, int songPitch) {
-        if(songPitch > 0) {
-            textView.setText("+" + songPitch);
-        } else {
-            textView.setText(String.valueOf(songPitch));
-        }
+        if(songPitch > 0) textView.setText("+" + songPitch);
+        else textView.setText(String.valueOf(songPitch));
     }
 
     @BindingAdapter("app:childFolderNum")
